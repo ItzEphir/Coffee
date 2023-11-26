@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="compliments">
+        <item>You are the only one</item>
+        <item>You are so beautiful</item>
+        <item>You should not claim your faults</item>
+        <item>Just have a coffee for that awesome morning</item>
+    </string-array>
+</resources>

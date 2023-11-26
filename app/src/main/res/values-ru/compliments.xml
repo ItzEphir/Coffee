@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="compliments">
+        <item>Ты такой один</item>
+        <item>Ты такой красивый человечек</item>
+        <item>Не суди себя за ошибки</item>
+        <item>Просто сделай кофе для столь прекрасного утра</item>
+    </string-array>
+</resources>
