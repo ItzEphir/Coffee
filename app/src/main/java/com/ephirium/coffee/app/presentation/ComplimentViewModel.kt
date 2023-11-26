@@ -1,9 +1,8 @@
 package com.ephirium.coffee.app.presentation
 
 import android.app.Application
-import android.content.Context
 import androidx.lifecycle.AndroidViewModel
-import com.simonsickle.sharedpreferencedelegate.delegate
+import com.ephirium.coffee.app.preferences.PreferenceManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlin.random.Random
@@ -16,8 +15,8 @@ abstract class ComplimentViewModel(application: Application) :
 
     abstract fun changeCompliment()
 
-    var compliments: List<String> = listOf()
-        protected set
+    protected var compliments: List<String> = listOf()
+        private set
 
     open fun loadCompliments(compliments: List<String>) {
         this.compliments = compliments
@@ -25,22 +24,15 @@ abstract class ComplimentViewModel(application: Application) :
 }
 
 
-internal class ComplimentViewModelImpl(private val application: Application) :
-    ComplimentViewModel(application) {
-    private val sharedPreferences = application.getSharedPreferences("pref", Context.MODE_PRIVATE)
-    private var stringCompliment by sharedPreferences.delegate("compliment", String())
-    override val compliment = MutableStateFlow(stringCompliment as String)
+private class ComplimentViewModelImpl(application: Application) : ComplimentViewModel(application) {
+    private val preferenceManager = PreferenceManager(application)
+    override val compliment = MutableStateFlow(preferenceManager.compliment ?: String())
 
     override var currentIndex = 0
 
     override fun changeCompliment() {
-        stringCompliment = compliments[getIndex(compliments.indices)]
-        compliment.value = stringCompliment as String
-    }
-
-    override fun loadCompliments(compliments: List<String>) {
-        super.loadCompliments(compliments)
-        compliment.value = compliments[getIndex(compliments.indices)]
+        preferenceManager.compliment = compliments[getIndex(compliments.indices)]
+        compliment.value = preferenceManager.compliment as String
     }
 
     private fun getIndex(range: IntRange): Int = when (val index = Random.nextInt(range)) {
@@ -51,3 +43,6 @@ internal class ComplimentViewModelImpl(private val application: Application) :
         }
     }
 }
+
+internal fun createComplimentViewModel(application: Application): ComplimentViewModel =
+    ComplimentViewModelImpl(application)
