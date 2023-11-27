@@ -4,4 +4,5 @@
     <string name="pour_coffee">Налить ещё чашечку кофе</string>
     <string name="notification_channel_name">Ежедневный кофе</string>
     <string name="notification_coffee_description">Кофе для начала хорошого дня</string>
+    <string name="widget_refresh_button">Обновить</string>
 </resources>

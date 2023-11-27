@@ -36,7 +36,7 @@ fun MainScreen() {
     val activity = LocalContext.current as MainActivity
     activity.setAlarm()
 
-    MainScreenLayout(compliment = compliment, animationDuration = 500.milliseconds, block = {
+    MainScreenLayout(compliment = compliment, animationDuration = 200.milliseconds, block = {
         viewModel.changeCompliment()
     })
 }

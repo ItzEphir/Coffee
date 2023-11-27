@@ -3,4 +3,5 @@
     <string name="pour_coffee">Pour another cup of coffee</string>
     <string name="notification_channel_name">Daily Coffee</string>
     <string name="notification_coffee_description">Coffee for a good day</string>
+    <string name="widget_refresh_button">Refresh</string>
 </resources>
