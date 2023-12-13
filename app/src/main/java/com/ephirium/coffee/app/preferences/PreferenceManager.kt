@@ -15,5 +15,4 @@ class PreferenceManager(context: Context) {
         const val sharedPreferenceKey = "pref"
         const val complimentKey = "compliment"
     }
-
 }

@@ -1,15 +1,15 @@
-package com.ephirium.coffee.app.presentation
+package com.ephirium.coffee.app.presentation.viewmodel
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import com.ephirium.coffee.app.preferences.PreferenceManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import org.koin.java.KoinJavaComponent.inject
 import kotlin.random.Random
 import kotlin.random.nextInt
 
-abstract class ComplimentViewModel(application: Application) :
-    AndroidViewModel(application = application) {
+abstract class ComplimentViewModel :
+    ViewModel() {
     abstract val compliment: StateFlow<String>
     protected abstract var currentIndex: Int
 
@@ -24,8 +24,8 @@ abstract class ComplimentViewModel(application: Application) :
 }
 
 
-private class ComplimentViewModelImpl(application: Application) : ComplimentViewModel(application) {
-    private val preferenceManager = PreferenceManager(application)
+private class ComplimentViewModelImpl : ComplimentViewModel() {
+    private val preferenceManager: PreferenceManager by inject(PreferenceManager::class.java)
     override val compliment = MutableStateFlow(preferenceManager.compliment ?: String())
 
     override var currentIndex = 0
@@ -44,5 +44,5 @@ private class ComplimentViewModelImpl(application: Application) : ComplimentView
     }
 }
 
-internal fun createComplimentViewModel(application: Application): ComplimentViewModel =
-    ComplimentViewModelImpl(application)
+internal fun createComplimentViewModel(): ComplimentViewModel =
+    ComplimentViewModelImpl()

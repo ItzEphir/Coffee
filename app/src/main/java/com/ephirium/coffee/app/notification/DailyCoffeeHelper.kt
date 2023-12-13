@@ -6,20 +6,21 @@ import androidx.core.app.NotificationCompat
 import com.ephirium.coffee.app.R
 import com.ephirium.coffee.app.R.array
 import com.ephirium.coffee.app.preferences.PreferenceManager
+import org.koin.java.KoinJavaComponent.inject
 import kotlin.random.Random
 import kotlin.random.nextInt
 
 
 class DailyCoffeeHelper(private val context: Context) {
 
-    private val preferenceManager = PreferenceManager(context)
+    private val preferenceManager: PreferenceManager by inject(PreferenceManager::class.java)
 
     fun createNotification() {
         val compliments = context.resources.getStringArray(array.compliments).toList()
 
         preferenceManager.compliment?.let { complimentNonNull ->
             val notification = NotificationCompat.Builder(context, CHANNEL_ID).setSmallIcon(
-                R.drawable.ic_launcher_foreground
+                R.drawable.coffee_logo
             ).setContentTitle(context.getString(R.string.app_name))
                 .setContentText(complimentNonNull).build()
 

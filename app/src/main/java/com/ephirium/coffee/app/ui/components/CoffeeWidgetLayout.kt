@@ -11,11 +11,12 @@ import androidx.glance.text.TextAlign
 import androidx.glance.text.TextStyle
 import com.ephirium.coffee.app.R
 import com.ephirium.coffee.app.preferences.PreferenceManager
+import org.koin.compose.koinInject
 import kotlin.random.Random
 import kotlin.random.nextInt
 
 @Composable
-fun CoffeeWidgetLayout(preferenceManager: PreferenceManager) {
+fun CoffeeWidgetLayout(preferenceManager: PreferenceManager = koinInject()) {
 
     var compliment by remember { mutableStateOf(preferenceManager.compliment.toString()) }
     val context = LocalContext.current

@@ -10,6 +10,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -21,9 +22,11 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ephirium.coffee.app.R
-import com.ephirium.coffee.app.presentation.ComplimentViewModel
+import com.ephirium.coffee.app.presentation.viewmodel.ComplimentViewModel
+import com.ephirium.coffee.app.presentation.viewmodel.MainViewModel
 import com.ephirium.coffee.app.ui.activity.MainActivity
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
@@ -32,11 +35,12 @@ import kotlin.time.Duration.Companion.milliseconds
 fun MainScreen() {
     val viewModel: ComplimentViewModel = koinViewModel()
     val compliment by viewModel.compliment.collectAsStateWithLifecycle()
+    val viewModel2: MainViewModel = koinViewModel()
 
     val activity = LocalContext.current as MainActivity
     activity.setAlarm()
 
-    MainScreenLayout(compliment = compliment, animationDuration = 200.milliseconds, block = {
+    MainScreenLayout(compliment = compliment, animationDuration = 300.milliseconds, block = {
         viewModel.changeCompliment()
     })
 }
@@ -45,20 +49,14 @@ fun MainScreen() {
 private fun MainScreenLayout(
     compliment: String = String(),
     animationDuration: Duration = 0.milliseconds,
-    block: () -> Unit,
+    block: () -> Unit = {},
 ) {
+    var isVisible by rememberSaveable { mutableStateOf(true) }
+
+    val scope = rememberCoroutineScope()
+
     ConstraintLayout {
         val (card, button) = createRefs()
-
-        var visible by remember { mutableStateOf(false) }
-        var changeCompliment by remember { mutableStateOf(false) }
-
-        LaunchedEffect(key1 = changeCompliment) {
-            visible = false
-            delay(animationDuration)
-            block()
-            visible = true
-        }
 
         Box(modifier = Modifier.constrainAs(card) {
             top.linkTo(parent.top)
@@ -67,7 +65,7 @@ private fun MainScreenLayout(
             bottom.linkTo(button.top)
         }) {
             AnimatedVisibility(
-                visible = visible,
+                visible = isVisible,
                 enter = fadeIn() + slideIn(initialOffset = { size ->
                     IntOffset(size.width / 4, size.height / 4)
                 }),
@@ -89,9 +87,14 @@ private fun MainScreenLayout(
             .wrapContentSize(),
             colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
             contentPadding = PaddingValues(8.dp),
-            enabled = visible,
+            enabled = isVisible,
             onClick = {
-                changeCompliment = !changeCompliment
+                scope.launch {
+                    isVisible = false
+                    delay(animationDuration)
+                    block()
+                    isVisible = true
+                }
             }) {
             Text(
                 text = stringResource(R.string.pour_coffee),
@@ -107,5 +110,5 @@ private fun MainScreenLayout(
 @Preview(showBackground = true)
 @Composable
 private fun MainScreenPreview() {
-    MainScreenLayout(compliment = "You are ok", animationDuration = 0.milliseconds, block = {})
+    MainScreenLayout(compliment = "You are ok")
 }

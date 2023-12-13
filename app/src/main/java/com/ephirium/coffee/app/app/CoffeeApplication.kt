@@ -8,6 +8,7 @@ import com.ephirium.coffee.app.R
 import com.ephirium.coffee.app.di.appModule
 import com.ephirium.coffee.app.notification.DailyCoffeeHelper
 import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 
 class CoffeeApplication : Application() {
@@ -31,6 +32,7 @@ class CoffeeApplication : Application() {
 
     private fun startKoin(){
         startKoin {
+            androidLogger()
             androidContext(this@CoffeeApplication)
             modules(appModule)
         }
