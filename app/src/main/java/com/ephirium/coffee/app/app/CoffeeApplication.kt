@@ -6,6 +6,8 @@ import android.app.NotificationManager
 import android.content.Context
 import com.ephirium.coffee.app.R
 import com.ephirium.coffee.app.di.appModule
+import com.ephirium.coffee.app.di.dataModule
+import com.ephirium.coffee.app.di.domainModule
 import com.ephirium.coffee.app.notification.DailyCoffeeHelper
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -26,15 +28,16 @@ class CoffeeApplication : Application() {
             NotificationManager.IMPORTANCE_DEFAULT
         )
         channel.description = getString(R.string.notification_coffee_description)
-        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notificationManager =
+            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.createNotificationChannel(channel)
     }
 
-    private fun startKoin(){
+    private fun startKoin() {
         startKoin {
             androidLogger()
             androidContext(this@CoffeeApplication)
-            modules(appModule)
+            modules(listOf(dataModule, domainModule, appModule))
         }
     }
 }

@@ -1,5 +1,11 @@
 @file:Suppress("UnstableApiUsage")
 
+include(":data")
+
+
+include(":domain")
+
+
 pluginManagement {
     repositories {
         google()

@@ -37,6 +37,14 @@ fun MainScreen() {
     val compliment by viewModel.compliment.collectAsStateWithLifecycle()
     val viewModel2: MainViewModel = koinViewModel()
 
+    LaunchedEffect(key1 = Unit, block = {
+        viewModel2.mainScreenState.collect {
+            if(it.compliment == null){
+
+            }
+        }
+    })
+
     val activity = LocalContext.current as MainActivity
     activity.setAlarm()
 

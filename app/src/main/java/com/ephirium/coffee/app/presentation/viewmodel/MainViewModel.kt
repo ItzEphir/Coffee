@@ -9,29 +9,26 @@ import kotlinx.coroutines.flow.StateFlow
 abstract class MainViewModel : ViewModel() {
     abstract val mainScreenState: StateFlow<MainScreenState>
 
-    abstract var visibility: Boolean
-    abstract var compliment: String
+    abstract fun changeState(state: MainScreenState)
+
+    abstract suspend fun emitState(state: MainScreenState)
 }
 
 private class MainViewModelImpl(preferenceManager: PreferenceManager) : MainViewModel() {
 
     override val mainScreenState: MutableStateFlow<MainScreenState> = MutableStateFlow(
-        MainScreenState(true, preferenceManager.compliment ?: "")
+        MainScreenState(isVisible = true, compliment = preferenceManager.compliment)
     )
 
-    override var visibility: Boolean
-        get() = mainScreenState.value.isVisible
-        set(value) {
-            mainScreenState.value = mainScreenState.value.copy(isVisible = value)
-        }
+    override fun changeState(state: MainScreenState) {
+        mainScreenState.value = state
+    }
 
-    override var compliment: String
-        get() = mainScreenState.value.compliment
-        set(value) {
-            mainScreenState.value = mainScreenState.value.copy(compliment = value)
-        }
+    override suspend fun emitState(state: MainScreenState) {
+        mainScreenState.emit(state)
+    }
 }
 
-fun createMainViewModel(preferenceManager: PreferenceManager): MainViewModel{
+fun createMainViewModel(preferenceManager: PreferenceManager): MainViewModel {
     return MainViewModelImpl(preferenceManager)
 }
