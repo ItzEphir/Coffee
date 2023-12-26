@@ -7,6 +7,7 @@ import com.ephirium.coffee.app.presentation.viewmodel.createComplimentViewModel
 import com.ephirium.coffee.app.presentation.viewmodel.createMainViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModelOf
+import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 val appModule = module {
@@ -15,7 +16,7 @@ val appModule = module {
 
     viewModelOf(::createMainViewModel)
 
-    single { PreferenceManager(androidContext()) }
+    singleOf(::PreferenceManager)
 
     single { androidContext().getSystemService(Context.ALARM_SERVICE) as AlarmManager }
 }

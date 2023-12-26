@@ -6,8 +6,8 @@ import android.app.NotificationManager
 import android.content.Context
 import com.ephirium.coffee.app.R
 import com.ephirium.coffee.app.di.appModule
-import com.ephirium.coffee.app.di.dataModule
-import com.ephirium.coffee.app.di.domainModule
+import com.ephirium.coffee.data.di.dataModule
+import com.ephirium.coffee.domain.di.domainModule
 import com.ephirium.coffee.app.notification.DailyCoffeeHelper
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger

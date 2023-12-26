@@ -39,12 +39,11 @@ class MainActivity : ComponentActivity() {
         }
 
         setContent {
-
-            LaunchedEffect(key1 = Unit) {
+            LaunchedEffect(key1 = Unit, block = {
                 complimentViewModel.loadCompliments(
                     resources.getStringArray(R.array.compliments).toList()
                 )
-            }
+            })
 
             CoffeeTheme {
                 Surface(

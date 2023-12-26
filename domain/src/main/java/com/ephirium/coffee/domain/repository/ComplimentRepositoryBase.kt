@@ -1,7 +1,8 @@
 package com.ephirium.coffee.domain.repository
 
 import com.ephirium.coffee.domain.model.ComplimentDtoBase
+import kotlinx.coroutines.flow.Flow
 
 interface ComplimentRepositoryBase {
-    fun getCompliments(): List<ComplimentDtoBase>
+    suspend fun getCompliments(onException: (exception: Exception) -> Unit): Flow<ComplimentDtoBase>
 }
