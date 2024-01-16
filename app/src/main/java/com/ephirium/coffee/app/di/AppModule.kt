@@ -2,6 +2,7 @@ package com.ephirium.coffee.app.di
 
 import android.app.AlarmManager
 import android.content.Context
+import com.ephirium.coffee.app.notification.DailyCoffeeHelper
 import com.ephirium.coffee.app.preferences.PreferenceManager
 import com.ephirium.coffee.app.presentation.viewmodel.createComplimentViewModel
 import com.ephirium.coffee.app.presentation.viewmodel.createMainViewModel
@@ -17,6 +18,8 @@ val appModule = module {
     viewModelOf(::createMainViewModel)
 
     singleOf(::PreferenceManager)
+
+    singleOf(::DailyCoffeeHelper)
 
     single { androidContext().getSystemService(Context.ALARM_SERVICE) as AlarmManager }
 }

@@ -1,6 +1,8 @@
 package com.ephirium.coffee.data.model
 
-import com.ephirium.coffee.domain.model.ComplimentDtoBase
+import com.ephirium.coffee.domain.model.dto.ComplimentDtoBase
+
+typealias ComplimentDto = ComplimentDtoImpl
 
 data class ComplimentDtoImpl(
     override var id: String = String(),

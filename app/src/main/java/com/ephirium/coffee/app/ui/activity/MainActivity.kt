@@ -54,22 +54,4 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-
-    fun setAlarm() {
-        val calendar: Calendar = Calendar.getInstance()
-        calendar.set(Calendar.HOUR_OF_DAY, 10)
-        calendar.set(Calendar.MINUTE, 0)
-        calendar.set(Calendar.SECOND, 0)
-        if (calendar.time < Date()) {
-            calendar.add(Calendar.DAY_OF_MONTH, 1)
-        }
-        val intent = Intent(applicationContext, DailyCoffeeReceiver::class.java)
-        val pendingIntent = PendingIntent.getBroadcast(
-            applicationContext, 0, intent, PendingIntent.FLAG_IMMUTABLE
-        )
-        val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
-        alarmManager.setRepeating(
-            AlarmManager.RTC_WAKEUP, calendar.timeInMillis, AlarmManager.INTERVAL_DAY, pendingIntent
-        )
-    }
 }
