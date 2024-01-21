@@ -1,29 +1,26 @@
 [versions]
-agp = "8.2.0"
+agp = "8.2.1"
 coil = "2.5.0"
 firebase-bom = "32.7.0"
-google-google-services = "4.3.10"
 google-services = "4.4.0"
-kotlin-compiler-extension = "1.5.6"
 androidx-constraintlayout-compose-android = "1.1.0-alpha13"
-koin-core = "3.5.0"
+koin-core = "3.5.3"
 kotlin-jvm = "1.9.21"
 core-ktx = "1.12.0"
 junit = "4.13.2"
 androidx-test-ext-junit = "1.1.5"
 espresso-core = "3.5.1"
-kotlinx-coroutines-core = "1.8.0-RC"
-lifecycle-runtime-ktx = "2.6.2"
-activity-compose = "1.8.1"
+kotlinx-coroutines-core = "1.8.0-RC2"
+lifecycle-runtime-ktx = "2.7.0"
+activity-compose = "1.8.2"
 compose-bom = "2023.10.01"
 sharedpreference-delegate = "1.0.0"
 glance = "1.0.0"
 work-runtime-ktx = "2.9.0"
 firebase-firestore = "24.10.0"
-firebase-common-ktx = "20.4.2"
-google-firebase-common-ktx = "20.4.2"
 appcompat = "1.6.1"
-material = "1.10.0"
+material = "1.11.0"
+firebase-auth = "22.3.0"
 
 [libraries]
 androidx-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycle-runtime-ktx" }
@@ -34,7 +31,6 @@ coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
 constraintlayout-compose-android = { module = "androidx.constraintlayout:constraintlayout-compose-android", version.ref = "androidx-constraintlayout-compose-android" }
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
 google-services = { module = "com.google.gms:google-services", version.ref = "google-services" }
-google-services-v4310 = { module = "com.google.gms:google-services", version.ref = "google-google-services" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-ext-junit" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
@@ -58,15 +54,14 @@ androidx-glance-appwidget = { module = "androidx.glance:glance-appwidget", versi
 androidx-glance-material3 = { module = "androidx.glance:glance-material3", version.ref = "glance" }
 firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore", version.ref = "firebase-firestore" }
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-bom"}
-firebase-common-ktx = { group = "com.google.firebase", name = "firebase-common-ktx", version.ref = "google-firebase-common-ktx" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebase-auth" }
 
 [plugins]
 application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin-jvm" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin-jvm" }
-gms = {id = "com.google.gms.google-services"}
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
 
 [bundles]

@@ -1,50 +1,76 @@
 package com.ephirium.coffee.data.repository
 
-import com.ephirium.coffee.data.model.ComplimentDto
+import com.ephirium.coffee.data.model.ComplimentDTO
 import com.ephirium.coffee.data.storage.Database
-import com.ephirium.coffee.domain.model.dto.ComplimentDtoBase
+import com.ephirium.coffee.domain.model.dto.ComplimentDTOBase
 import com.ephirium.coffee.domain.repository.ComplimentRepositoryBase
+import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.toObject
+import com.google.firebase.firestore.toObjects
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.launch
+import kotlin.coroutines.cancellation.CancellationException
 
 internal class ComplimentRepositoryImpl : ComplimentRepositoryBase {
     private val compliments = Database.compliments
     
-    override suspend fun getComplimentsFlow(): Flow<Result<ComplimentDtoBase>> = callbackFlow {
-        val registration = compliments.addSnapshotListener { snapshot, e ->
-            e?.let {
-                close(it)
-            }
-            try {
-                snapshot!!.documents.forEach { document ->
-                    val res = document.toObject<ComplimentDto>()!!
-                    trySend(Result.success(res))
+    override suspend fun getComplimentsFlow(): Flow<Result<List<ComplimentDTOBase>>> =
+        callbackFlow {
+            val listenerRegistration = compliments.addSnapshotListener { snapshot, exception ->
+                exception?.let {
+                    cancel(CancellationException(it))
                 }
-            } catch (e: Exception) {
-                close(e)
+                CoroutineScope(coroutineContext).launch {
+                    send(
+                        when (snapshot) {
+                            null -> Result.failure(
+                                FirebaseFirestoreException(
+                                    "Snapshot for compliments wasn't found",
+                                    FirebaseFirestoreException.Code.NOT_FOUND
+                                )
+                            )
+                            
+                            else -> Result.success(snapshot.toObjects())
+                        }
+                    )
+                }
             }
+            
+            awaitClose(listenerRegistration::remove)
         }
-        
-        awaitClose(registration::remove)
-        
-        invokeOnClose {
-            it?.let { throwable -> trySend(Result.failure(throwable)) }
-        }
-    }
     
-    override suspend fun getComplimentFlowById(id: String): Flow<Result<ComplimentDtoBase>> =
+    override suspend fun getComplimentFlowById(id: String): Flow<Result<ComplimentDTOBase>> =
         callbackFlow {
             val registration = compliments.document(id).addSnapshotListener { snapshot, e ->
-                e?.let {
-                    close(it)
-                }
-                try {
-                    val res = snapshot!!.toObject<ComplimentDto>()!!
-                    trySend(Result.success(res))
-                } catch (e: Exception) {
-                    trySend(Result.failure(e))
+                launch {
+                    e?.let {
+                        close(it)
+                    }
+                    if (snapshot == null) {
+                        send(Result.failure(NullPointerException("Document Snapshot is null")))
+                        return@launch
+                    }
+                    if (!snapshot.exists()) {
+                        send(
+                            Result.failure(
+                                FirebaseFirestoreException(
+                                    "Snapshot does not exist",
+                                    FirebaseFirestoreException.Code.UNAVAILABLE
+                                )
+                            )
+                        )
+                        return@launch
+                    }
+                    val dto = snapshot.toObject<ComplimentDTO>()
+                    if (dto == null) {
+                        send(Result.failure(NullPointerException("Document can`t be parsed to dto")))
+                        return@launch
+                    }
+                    send(Result.success(dto))
                 }
             }
             

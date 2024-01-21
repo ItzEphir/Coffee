@@ -1,10 +1,10 @@
 package com.ephirium.coffee.domain.repository
 
-import com.ephirium.coffee.domain.model.dto.ComplimentDtoBase
+import com.ephirium.coffee.domain.model.dto.ComplimentDTOBase
 import kotlinx.coroutines.flow.Flow
 
 interface ComplimentRepositoryBase {
-    suspend fun getComplimentsFlow(): Flow<Result<ComplimentDtoBase>>
+    suspend fun getComplimentsFlow(): Flow<Result<List<ComplimentDTOBase>>>
 
-    suspend fun getComplimentFlowById(id: String) : Flow<Result<ComplimentDtoBase>>
+    suspend fun getComplimentFlowById(id: String) : Flow<Result<ComplimentDTOBase>>
 }

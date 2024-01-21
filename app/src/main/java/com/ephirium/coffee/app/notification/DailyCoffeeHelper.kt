@@ -17,27 +17,32 @@ import kotlin.random.Random
 import kotlin.random.nextInt
 
 
-class DailyCoffeeHelper(private val context: Context, private val alarmManager: AlarmManager) {
-
+class DailyCoffeeHelper(
+    private val context: Context,
+    private val alarmManager: AlarmManager,
+) {
+    
     private val preferenceManager: PreferenceManager by inject(PreferenceManager::class.java)
-
+    
     fun createNotification() {
         val compliments = context.resources.getStringArray(array.compliments).toList()
-
+        
+        
+        
         preferenceManager.compliment?.let { complimentNonNull ->
             val notification = NotificationCompat.Builder(context, CHANNEL_ID).setSmallIcon(
                 R.drawable.coffee_logo
             ).setContentTitle(context.getString(R.string.app_name))
                 .setContentText(complimentNonNull).build()
-
+            
             preferenceManager.compliment = compliments[getIndex(compliments, complimentNonNull)]
-
+            
             val notificationManager =
                 context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.notify(1, notification)
         }
     }
-
+    
     fun setAlarm(calendar: Calendar) {
         if (calendar.time < Date()) {
             calendar.add(Calendar.DAY_OF_MONTH, 1)
@@ -48,18 +53,18 @@ class DailyCoffeeHelper(private val context: Context, private val alarmManager: 
             Intent(context, DailyCoffeeReceiver::class.java),
             PendingIntent.FLAG_IMMUTABLE
         )
-
+        
         alarmManager.setRepeating(
             AlarmManager.RTC_WAKEUP, calendar.timeInMillis, AlarmManager.INTERVAL_DAY, pendingIntent
         )
     }
-
+    
     private fun getIndex(compliments: List<String>, compliment: String): Int =
         when (val index = Random.nextInt(compliments.indices)) {
             compliments.indexOf(compliment) -> getIndex(compliments, compliment)
             else                            -> index
         }
-
+    
     companion object {
         const val CHANNEL_ID = "daily_coffee_channel"
     }
