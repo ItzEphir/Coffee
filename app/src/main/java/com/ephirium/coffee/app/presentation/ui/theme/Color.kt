@@ -1,4 +1,4 @@
-package com.ephirium.coffee.app.ui.theme
+package com.ephirium.coffee.app.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

@@ -7,12 +7,12 @@ import com.ephirium.coffee.domain.repository.ComplimentRepositoryBase
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.toObject
 import com.google.firebase.firestore.toObjects
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.cancel
+import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import kotlin.coroutines.cancellation.CancellationException
 
 internal class ComplimentRepositoryImpl : ComplimentRepositoryBase {
@@ -34,17 +34,17 @@ internal class ComplimentRepositoryImpl : ComplimentRepositoryBase {
                                 )
                             )
                             
-                            else -> Result.success(snapshot.toObjects())
+                            else -> Result.success(snapshot.toObjects<ComplimentDTO>())
                         }
                     )
                 }
             }
             
             awaitClose(listenerRegistration::remove)
-        }
+        }.flowOn(Dispatchers.IO)
     
     override suspend fun getComplimentFlowById(id: String): Flow<Result<ComplimentDTOBase>> =
-        callbackFlow {
+        callbackFlow<Result<ComplimentDTOBase>> {
             val registration = compliments.document(id).addSnapshotListener { snapshot, e ->
                 launch {
                     e?.let {
@@ -79,5 +79,5 @@ internal class ComplimentRepositoryImpl : ComplimentRepositoryBase {
             invokeOnClose {
                 it?.let { throwable -> trySend(Result.failure(throwable)) }
             }
-        }
+        }.flowOn(Dispatchers.IO)
 }

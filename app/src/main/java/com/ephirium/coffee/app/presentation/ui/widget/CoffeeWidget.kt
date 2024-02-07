@@ -1,4 +1,4 @@
-package com.ephirium.coffee.app.ui.widget
+package com.ephirium.coffee.app.presentation.ui.widget
 
 import android.content.Context
 import androidx.glance.*
@@ -9,8 +9,8 @@ import androidx.glance.appwidget.provideContent
 import androidx.glance.layout.Box
 import com.ephirium.coffee.app.R
 import com.ephirium.coffee.app.preferences.PreferenceManager
-import com.ephirium.coffee.app.ui.activity.MainActivity
-import com.ephirium.coffee.app.ui.components.CoffeeWidgetLayout
+import com.ephirium.coffee.app.presentation.ui.MainActivity
+import com.ephirium.coffee.app.presentation.ui.components.CoffeeWidgetLayout
 import kotlin.random.Random
 import kotlin.random.nextInt
 

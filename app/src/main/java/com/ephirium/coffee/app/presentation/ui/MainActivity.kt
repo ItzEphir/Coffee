@@ -1,10 +1,6 @@
-package com.ephirium.coffee.app.ui.activity
+package com.ephirium.coffee.app.presentation.ui
 
 import android.Manifest.permission
-import android.app.AlarmManager
-import android.app.PendingIntent
-import android.content.Intent
-import android.icu.util.Calendar
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -16,19 +12,15 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.core.app.ActivityCompat
 import com.ephirium.coffee.app.R
-import com.ephirium.coffee.app.presentation.viewmodel.ComplimentViewModel
-import com.ephirium.coffee.app.receivers.DailyCoffeeReceiver
-import com.ephirium.coffee.app.ui.components.MainScreen
-import com.ephirium.coffee.app.ui.theme.CoffeeTheme
+import com.ephirium.coffee.app.presentation.ui.components.screens.compliment.ComplimentScreen
+import com.ephirium.coffee.app.presentation.ui.navigation.Navigation
+import com.ephirium.coffee.app.presentation.ui.theme.CoffeeTheme
 import org.koin.androidx.viewmodel.ext.android.getViewModel
-import java.util.Date
 
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        val complimentViewModel: ComplimentViewModel = getViewModel()
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             ActivityCompat.requestPermissions(
@@ -39,17 +31,11 @@ class MainActivity : ComponentActivity() {
         }
 
         setContent {
-            LaunchedEffect(key1 = Unit, block = {
-                complimentViewModel.loadCompliments(
-                    resources.getStringArray(R.array.compliments).toList()
-                )
-            })
-
             CoffeeTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
                 ) {
-                    MainScreen()
+                    Navigation()
                 }
             }
         }

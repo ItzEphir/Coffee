@@ -2,6 +2,7 @@
 plugins {
     id("java-library")
     alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.serialization)
 }
 
 java {
@@ -14,4 +15,6 @@ dependencies {
     implementation(libs.koin.core)
 
     implementation(libs.kotlinx.coroutines.core)
+    
+    implementation(libs.serialization.json)
 }

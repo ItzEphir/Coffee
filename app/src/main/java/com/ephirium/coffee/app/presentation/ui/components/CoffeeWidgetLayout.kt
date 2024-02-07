@@ -1,4 +1,4 @@
-package com.ephirium.coffee.app.ui.components
+package com.ephirium.coffee.app.presentation.ui.components
 
 import androidx.compose.runtime.*
 import androidx.compose.ui.unit.dp

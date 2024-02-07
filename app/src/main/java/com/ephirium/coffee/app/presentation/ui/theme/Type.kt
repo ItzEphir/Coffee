@@ -1,10 +1,11 @@
-package com.ephirium.coffee.app.ui.theme
+package com.ephirium.coffee.app.presentation.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import kotlin.time.Duration.Companion.seconds
 
 val Typography = Typography(
     titleLarge = TextStyle(
@@ -50,16 +51,28 @@ val Typography = Typography(
         letterSpacing = 0.sp
     ),
     labelLarge = TextStyle(
-
+        fontFamily = FontFamily.Default,
+        fontWeight = FontWeight.Bold,
+        fontSize = 15.sp,
+        lineHeight = 18.sp,
+        letterSpacing = 0.5.sp
     ),
     labelMedium = TextStyle(
-
+        fontFamily = FontFamily.Default,
+        fontWeight = FontWeight.Normal,
+        fontSize = 13.sp,
+        lineHeight = 15.sp,
+        letterSpacing = 0.sp
     ),
     labelSmall = TextStyle(
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Medium,
         fontSize = 11.sp,
         lineHeight = 16.sp,
-        letterSpacing = 0.5.sp
+        letterSpacing = 0.sp
     ),
 )
+
+object Animations {
+    val complimentAnimationDuration = 0.5.seconds
+}

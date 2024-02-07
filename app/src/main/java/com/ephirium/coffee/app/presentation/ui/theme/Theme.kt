@@ -1,4 +1,4 @@
-package com.ephirium.coffee.app.ui.theme
+package com.ephirium.coffee.app.presentation.ui.theme
 
 import android.app.Activity
 import android.os.Build
@@ -54,6 +54,6 @@ fun CoffeeTheme(
     }
 
     MaterialTheme(
-        colorScheme = colorScheme, typography = Typography, content = content
+        colorScheme = colorScheme, typography = Typography, content = content,
     )
 }

@@ -8,5 +8,5 @@ typealias ComplimentDTO = ComplimentDTOImpl
 data class ComplimentDTOImpl(
     @DocumentId override var id: String = String(),
     override var text: Map<String, String> = mapOf(),
-    override var uid: String = String(),
+    override var user: String = String(),
 ) : ComplimentDTOBase

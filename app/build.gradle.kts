@@ -2,6 +2,8 @@
 plugins {
     alias(libs.plugins.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.serialization)
+    alias(libs.plugins.parcelize)
     id("com.google.gms.google-services")
 }
 
@@ -66,6 +68,7 @@ dependencies {
     implementation(libs.material3)
     implementation(libs.firebase.firestore)
     implementation(libs.firebase.auth)
+    implementation(libs.androidx.navigation.compose)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
@@ -88,4 +91,6 @@ dependencies {
     implementation(libs.coil)
     implementation(libs.coil.compose)
     implementation(libs.firebase.firestore)
+    implementation(libs.serialization.json)
+    implementation(libs.kotlin.reflect)
 }

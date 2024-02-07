@@ -1,4 +1,4 @@
-package com.ephirium.coffee.app.app
+package com.ephirium.coffee.app
 
 import android.app.Application
 import android.app.NotificationChannel
