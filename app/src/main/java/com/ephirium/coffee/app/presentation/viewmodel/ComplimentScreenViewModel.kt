@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ephirium.coffee.app.preferences.PreferenceManager
+import com.ephirium.coffee.app.presentation.model.mapWithUi
 import com.ephirium.coffee.app.presentation.state.MainScreenState
 import com.ephirium.coffee.app.presentation.state.MainScreenState.*
 import com.ephirium.coffee.app.presentation.ui.theme.Animations
@@ -33,7 +34,7 @@ class ComplimentScreenViewModel(
                 getComplimentByIdUseCase.execute(id).catch {
                     savedStateHandle[uiStateKey] = Error
                 }.collectLatest {
-                    savedStateHandle[uiStateKey] = Active(isVisible = true, compliment = it)
+                    savedStateHandle[uiStateKey] = Active(isVisible = true, compliment = it.mapWithUi())
                 }
             }
         }
@@ -51,7 +52,7 @@ class ComplimentScreenViewModel(
                 savedStateHandle[uiStateKey] = Error
             }.collectLatest {
                 delay(Animations.complimentAnimationDuration)
-                savedStateHandle[uiStateKey] = Active(isVisible = true, compliment = it)
+                savedStateHandle[uiStateKey] = Active(isVisible = true, compliment = it.mapWithUi())
             }
         }
     }

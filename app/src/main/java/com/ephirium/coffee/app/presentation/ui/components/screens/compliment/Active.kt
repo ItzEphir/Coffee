@@ -18,9 +18,9 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.ephirium.coffee.app.R
+import com.ephirium.coffee.app.presentation.model.UiCompliment
 import com.ephirium.coffee.app.presentation.state.MainScreenState.Active
 import com.ephirium.coffee.app.presentation.ui.theme.CoffeeTheme
-import com.ephirium.coffee.domain.model.present.Compliment
 
 @Composable
 fun Active(state: Active, onSwapClicked: () -> Unit) {
@@ -77,7 +77,7 @@ internal fun ActivePreview() {
     CoffeeTheme {
         Active(
             Active(
-                isVisible = true, compliment = Compliment(
+                isVisible = true, compliment = UiCompliment(
                     id = "",
                     text = mapOf("ru" to "Ты такая красивая", "en" to "You are so beautiful")
                 )

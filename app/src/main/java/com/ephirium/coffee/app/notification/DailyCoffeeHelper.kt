@@ -31,7 +31,7 @@ class DailyCoffeeHelper(
         
         preferenceManager.compliment?.let { complimentNonNull ->
             val notification = NotificationCompat.Builder(context, CHANNEL_ID).setSmallIcon(
-                R.drawable.coffee_logo
+                R.drawable.ic_coffee_logo
             ).setContentTitle(context.getString(R.string.app_name))
                 .setContentText(complimentNonNull).build()
             

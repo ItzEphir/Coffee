@@ -29,17 +29,6 @@
         </activity>
 
         <receiver android:name=".receivers.DailyCoffeeReceiver" />
-        <receiver
-            android:name=".receivers.CoffeeWidgetReceiver"
-            android:enabled="true"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-            </intent-filter>
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/coffee_widget_info" />
-        </receiver>
     </application>
 
 </manifest>
