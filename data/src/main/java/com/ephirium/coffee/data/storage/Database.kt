@@ -10,7 +10,12 @@ object Database {
         database.collection(CollectionsKeys.compliments)
     }
 
+    val users by lazy{
+        database.collection(CollectionsKeys.users)
+    }
+    
     private object CollectionsKeys {
         const val compliments = "compliments"
+        const val users = "users"
     }
 }

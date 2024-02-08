@@ -10,8 +10,8 @@ import androidx.core.app.NotificationCompat
 import com.ephirium.coffee.app.R
 import com.ephirium.coffee.app.R.array
 import com.ephirium.coffee.app.preferences.PreferenceManager
+import com.ephirium.coffee.app.presentation.ui.MainActivity
 import com.ephirium.coffee.app.receivers.DailyCoffeeReceiver
-import org.koin.java.KoinJavaComponent.inject
 import java.util.Date
 import kotlin.random.Random
 import kotlin.random.nextInt
@@ -20,20 +20,26 @@ import kotlin.random.nextInt
 class DailyCoffeeHelper(
     private val context: Context,
     private val alarmManager: AlarmManager,
+    private val preferenceManager: PreferenceManager
 ) {
-    
-    private val preferenceManager: PreferenceManager by inject(PreferenceManager::class.java)
     
     fun createNotification() {
         val compliments = context.resources.getStringArray(array.compliments).toList()
         
-        
-        
         preferenceManager.compliment?.let { complimentNonNull ->
-            val notification = NotificationCompat.Builder(context, CHANNEL_ID).setSmallIcon(
-                R.drawable.ic_coffee_logo
-            ).setContentTitle(context.getString(R.string.app_name))
-                .setContentText(complimentNonNull).build()
+            
+            val intent = Intent(context, MainActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            }
+            val pendingIntent = PendingIntent.getActivity(
+                context, System.currentTimeMillis().toInt(), intent, PendingIntent.FLAG_IMMUTABLE
+            )
+            
+            val notification =
+                NotificationCompat.Builder(context, CHANNEL_ID).setContentIntent(pendingIntent)
+                    .setSmallIcon(R.drawable.ic_coffee_logo)
+                    .setContentTitle(context.getString(R.string.app_name))
+                    .setContentText(complimentNonNull).build()
             
             preferenceManager.compliment = compliments[getIndex(compliments, complimentNonNull)]
             

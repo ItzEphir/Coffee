@@ -1,4 +1,4 @@
-package com.ephirium.coffee.domain.usecase
+package com.ephirium.coffee.domain.usecase.compliment
 
 import com.ephirium.coffee.domain.mapper.convertForPresentation
 import com.ephirium.coffee.domain.model.present.Compliment
@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.mapNotNull
 class GetComplimentByIdUseCase(private val complimentRepository: ComplimentRepositoryBase) {
     
     suspend fun execute(id: String): Flow<Compliment> =
-        complimentRepository.getComplimentFlowById(id).mapNotNull { complimentResult ->
+        complimentRepository.getComplimentById(id).mapNotNull { complimentResult ->
             complimentResult.getOrThrow().convertForPresentation()
         }
 }

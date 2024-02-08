@@ -93,4 +93,5 @@ dependencies {
     implementation(libs.firebase.firestore)
     implementation(libs.serialization.json)
     implementation(libs.kotlin.reflect)
+    implementation(libs.firebase.messaging)
 }

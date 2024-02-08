@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -71,6 +72,7 @@ fun Active(state: Active, onSwapClicked: () -> Unit) {
     }
 }
 
+@PreviewScreenSizes
 @Preview(showBackground = true)
 @Composable
 internal fun ActivePreview() {

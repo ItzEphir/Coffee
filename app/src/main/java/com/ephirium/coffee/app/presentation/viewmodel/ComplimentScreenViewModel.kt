@@ -8,8 +8,8 @@ import com.ephirium.coffee.app.presentation.model.mapWithUi
 import com.ephirium.coffee.app.presentation.state.MainScreenState
 import com.ephirium.coffee.app.presentation.state.MainScreenState.*
 import com.ephirium.coffee.app.presentation.ui.theme.Animations
-import com.ephirium.coffee.domain.usecase.GetComplimentByIdUseCase
-import com.ephirium.coffee.domain.usecase.GetRandomComplimentUseCase
+import com.ephirium.coffee.domain.usecase.compliment.GetComplimentByIdUseCase
+import com.ephirium.coffee.domain.usecase.compliment.GetRandomComplimentUseCase
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch

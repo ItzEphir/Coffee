@@ -1,8 +1,7 @@
-package com.ephirium.coffee.domain.usecase
+package com.ephirium.coffee.domain.usecase.compliment
 
 import com.ephirium.coffee.domain.model.present.Compliment
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.mapNotNull
+import kotlinx.coroutines.flow.*
 
 class GetRandomComplimentUseCase(private val getComplimentsUseCase: GetComplimentsUseCase) {
     

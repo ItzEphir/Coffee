@@ -7,18 +7,20 @@ import com.ephirium.coffee.domain.repository.ComplimentRepositoryBase
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.toObject
 import com.google.firebase.firestore.toObjects
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.launch
 import kotlin.coroutines.cancellation.CancellationException
 
 internal class ComplimentRepositoryImpl : ComplimentRepositoryBase {
     private val compliments = Database.compliments
     
-    override suspend fun getComplimentsFlow(): Flow<Result<List<ComplimentDTOBase>>> =
+    override suspend fun getCompliments(): Flow<Result<List<ComplimentDTOBase>>> =
         callbackFlow {
             val listenerRegistration = compliments.addSnapshotListener { snapshot, exception ->
                 exception?.let {
@@ -43,7 +45,7 @@ internal class ComplimentRepositoryImpl : ComplimentRepositoryBase {
             awaitClose(listenerRegistration::remove)
         }.flowOn(Dispatchers.IO)
     
-    override suspend fun getComplimentFlowById(id: String): Flow<Result<ComplimentDTOBase>> =
+    override suspend fun getComplimentById(id: String): Flow<Result<ComplimentDTOBase>> =
         callbackFlow<Result<ComplimentDTOBase>> {
             val registration = compliments.document(id).addSnapshotListener { snapshot, e ->
                 launch {
@@ -51,16 +53,14 @@ internal class ComplimentRepositoryImpl : ComplimentRepositoryBase {
                         close(it)
                     }
                     if (snapshot == null) {
-                        send(Result.failure(NullPointerException("Document Snapshot is null")))
+                        close(NullPointerException("Document Snapshot is null"))
                         return@launch
                     }
                     if (!snapshot.exists()) {
-                        send(
-                            Result.failure(
-                                FirebaseFirestoreException(
-                                    "Snapshot does not exist",
-                                    FirebaseFirestoreException.Code.UNAVAILABLE
-                                )
+                        close(
+                            FirebaseFirestoreException(
+                                "Snapshot does not exist",
+                                FirebaseFirestoreException.Code.UNAVAILABLE
                             )
                         )
                         return@launch
