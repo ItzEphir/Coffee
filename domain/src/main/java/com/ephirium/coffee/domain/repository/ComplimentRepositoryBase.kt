@@ -7,4 +7,8 @@ interface ComplimentRepositoryBase {
     suspend fun getCompliments(): Flow<Result<List<ComplimentDTOBase>>>
 
     suspend fun getComplimentById(id: String) : Flow<Result<ComplimentDTOBase>>
+    
+    suspend fun getSavedComplimentIdLocally() : Flow<Result<String>>
+    
+    suspend fun saveComplimentIdLocally(id: String) : Flow<Result<String>>
 }

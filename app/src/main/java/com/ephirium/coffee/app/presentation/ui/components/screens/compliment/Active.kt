@@ -52,17 +52,21 @@ fun Active(state: Active, onSwapClicked: () -> Unit) {
             )
         }
         
-        Button(modifier = Modifier
-            .constrainAs(swapButton) {
-                bottom.linkTo(parent.bottom)
-                start.linkTo(parent.start)
-                end.linkTo(parent.end)
-            }
-            .padding(all = 8.dp)
-            .padding(bottom = 12.dp), colors = ButtonDefaults.buttonColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer,
-            contentColor = MaterialTheme.colorScheme.primary
-        ), onClick = onSwapClicked) {
+        Button(
+            modifier = Modifier
+                .constrainAs(swapButton) {
+                    bottom.linkTo(parent.bottom)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                }
+                .padding(all = 8.dp)
+                .padding(bottom = 12.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.primaryContainer,
+                contentColor = MaterialTheme.colorScheme.primary
+            ),
+            onClick = onSwapClicked, enabled = state.isVisible,
+        ) {
             Text(
                 modifier = Modifier.padding(vertical = 4.dp),
                 text = stringResource(id = R.string.pour_coffee),

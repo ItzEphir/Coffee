@@ -10,14 +10,9 @@ class PreferenceManager(context: Context) {
     var compliment: String?
         get() = sharedPreferences.getString(complimentKey, null)
         set(value) = sharedPreferences.edit().putString(complimentKey, value).apply()
-    
-    var complimentId: String?
-        get() = sharedPreferences.getString(complimentIdKey, null)
-        set(value) = sharedPreferences.edit().putString(complimentIdKey, value).apply()
 
     companion object {
         const val sharedPreferenceKey = "pref"
         const val complimentKey = "compliment"
-        const val complimentIdKey = "complimentId"
     }
 }

@@ -3,13 +3,16 @@ package com.ephirium.coffee.app.presentation.viewmodel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ephirium.coffee.app.preferences.PreferenceManager
 import com.ephirium.coffee.app.presentation.model.mapWithUi
 import com.ephirium.coffee.app.presentation.state.MainScreenState
 import com.ephirium.coffee.app.presentation.state.MainScreenState.*
 import com.ephirium.coffee.app.presentation.ui.theme.Animations
 import com.ephirium.coffee.domain.usecase.compliment.GetComplimentByIdUseCase
 import com.ephirium.coffee.domain.usecase.compliment.GetRandomComplimentUseCase
+import com.ephirium.coffee.domain.usecase.compliment.GetSavedComplimentUseCase
+import com.ephirium.coffee.domain.usecase.compliment.SaveComplimentIdUseCase
+import com.google.firebase.firestore.FirebaseFirestoreException
+import com.google.firebase.firestore.FirebaseFirestoreException.Code.UNAVAILABLE
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
@@ -19,23 +22,25 @@ import kotlinx.coroutines.launch
 class ComplimentScreenViewModel(
     private val savedStateHandle: SavedStateHandle,
     private val getRandomComplimentUseCase: GetRandomComplimentUseCase,
-    private val getComplimentByIdUseCase: GetComplimentByIdUseCase,
-    private val preferenceManager: PreferenceManager,
+    private val getSavedComplimentUseCase: GetSavedComplimentUseCase,
+    private val saveComplimentIdUseCase: SaveComplimentIdUseCase,
 ) : ViewModel() {
     val uiState: StateFlow<MainScreenState> = savedStateHandle.getStateFlow<MainScreenState>(
         uiStateKey, initialValue = Loading
     )
     
     fun loadCompliment() {
-        when (val id = preferenceManager.complimentId) {
-            null -> swapCompliment()
-            
-            else -> viewModelScope.launch {
-                getComplimentByIdUseCase.execute(id).catch {
-                    savedStateHandle[uiStateKey] = Error
-                }.collectLatest {
-                    savedStateHandle[uiStateKey] = Active(isVisible = true, compliment = it.mapWithUi())
+        viewModelScope.launch {
+            getSavedComplimentUseCase.execute().catch {
+                when (it) {
+                    is FirebaseFirestoreException -> if (it.code == UNAVAILABLE) {
+                        savedStateHandle[uiStateKey] = Error
+                    }
+                    
+                    is NullPointerException       -> swapCompliment()
                 }
+            }.collectLatest {
+                savedStateHandle[uiStateKey] = Active(isVisible = true, compliment = it.mapWithUi())
             }
         }
     }
@@ -50,9 +55,14 @@ class ComplimentScreenViewModel(
                 if (uiState.value is Active) (uiState.value as Active).compliment.id else null
             ).catch {
                 savedStateHandle[uiStateKey] = Error
-            }.collectLatest {
+            }.collectLatest { compliment ->
                 delay(Animations.complimentAnimationDuration)
-                savedStateHandle[uiStateKey] = Active(isVisible = true, compliment = it.mapWithUi())
+                saveComplimentIdUseCase.execute(compliment.id).catch {
+                    savedStateHandle[uiStateKey] = Error
+                }.collectLatest {
+                    savedStateHandle[uiStateKey] =
+                        Active(isVisible = true, compliment = compliment.mapWithUi())
+                }
             }
         }
     }

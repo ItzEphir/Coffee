@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.mapNotNull
 
 class GetUserByIdUseCase(private val userRepository: UserRepositoryBase) {
-    suspend fun execute(id: String): Flow<User> =
+    suspend fun execute(id: String) =
         userRepository.getUserById(id).mapNotNull { userResult ->
             userResult.getOrThrow().convertForPresentation()
         }

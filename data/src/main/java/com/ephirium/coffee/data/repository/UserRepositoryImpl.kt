@@ -60,7 +60,7 @@ class UserRepositoryImpl : UserRepositoryBase {
             }
         }.flowOn(Dispatchers.IO)
     
-    @ExperimentalCoroutinesApi
+    @OptIn(ExperimentalCoroutinesApi::class)
     override suspend fun postUser(user: User): Flow<Result<UserDTOBase>> =
         callbackFlow<Result<Unit>> {
             launch {
@@ -90,5 +90,5 @@ class UserRepositoryImpl : UserRepositoryBase {
         }.flatMapLatest { result ->
             result.getOrThrow()
             getUserById(user.id)
-        }.flowOn(Dispatchers.IO)
+        }.catch { emit(Result.failure(it)) }.flowOn(Dispatchers.IO)
 }
