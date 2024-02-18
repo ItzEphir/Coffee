@@ -18,7 +18,7 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlin.coroutines.cancellation.CancellationException
 
-internal class ComplimentRepositoryImpl() : ComplimentRepositoryBase {
+internal class ComplimentRepositoryImpl : ComplimentRepositoryBase {
     
     override suspend fun getCompliments(): Flow<Result<List<ComplimentDTOBase>>> = callbackFlow {
         val listenerRegistration = Database.compliments.addSnapshotListener { snapshot, exception ->

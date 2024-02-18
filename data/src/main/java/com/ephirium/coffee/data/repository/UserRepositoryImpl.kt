@@ -67,7 +67,7 @@ class UserRepositoryImpl : UserRepositoryBase {
                 Database.users.document(user.id).set(
                     mapOf(
                         "user" to user.user,
-                        "token" to user.token,
+                        "devices" to user.devices,
                     )
                 ).addOnSuccessListener {
                     launch {

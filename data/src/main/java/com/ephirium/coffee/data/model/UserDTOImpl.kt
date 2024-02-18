@@ -6,5 +6,5 @@ import com.google.firebase.firestore.DocumentId
 data class UserDTOImpl(
     @DocumentId override var id: String = "",
     override var user: String = "",
-    override var token: String = "",
+    override var devices: List<String> = emptyList(),
 ) : UserDTOBase

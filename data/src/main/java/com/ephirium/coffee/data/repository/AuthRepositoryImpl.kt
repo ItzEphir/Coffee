@@ -49,7 +49,7 @@ class AuthRepositoryImpl(private val userRepository: UserRepositoryBase) : AuthR
         }
         userRepository.postUser(
             User(
-                UUID.randomUUID().toString(), result.getOrThrow().uid, Database.fcm.token.result
+                UUID.randomUUID().toString(), result.getOrThrow().uid, listOf(Database.fcm.token.result)
             )
         )
     }.flowOn(Dispatchers.IO)

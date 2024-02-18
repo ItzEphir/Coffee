@@ -7,12 +7,10 @@ import com.ephirium.coffee.app.presentation.model.mapWithUi
 import com.ephirium.coffee.app.presentation.state.MainScreenState
 import com.ephirium.coffee.app.presentation.state.MainScreenState.*
 import com.ephirium.coffee.app.presentation.ui.theme.Animations
-import com.ephirium.coffee.domain.usecase.compliment.GetComplimentByIdUseCase
 import com.ephirium.coffee.domain.usecase.compliment.GetRandomComplimentUseCase
 import com.ephirium.coffee.domain.usecase.compliment.GetSavedComplimentUseCase
 import com.ephirium.coffee.domain.usecase.compliment.SaveComplimentIdUseCase
 import com.google.firebase.firestore.FirebaseFirestoreException
-import com.google.firebase.firestore.FirebaseFirestoreException.Code.UNAVAILABLE
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
@@ -33,9 +31,7 @@ class ComplimentScreenViewModel(
         viewModelScope.launch {
             getSavedComplimentUseCase.execute().catch {
                 when (it) {
-                    is FirebaseFirestoreException -> if (it.code == UNAVAILABLE) {
-                        savedStateHandle[uiStateKey] = Error
-                    }
+                    is FirebaseFirestoreException -> savedStateHandle[uiStateKey] = Error
                     
                     is NullPointerException       -> swapCompliment()
                 }
