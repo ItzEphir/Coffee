@@ -1,6 +1,7 @@
 package com.ephirium.coffee.databases.users.datastore
 
 import com.ephirium.coffee.common.Status.*
+import com.ephirium.coffee.common.onTimeout
 import com.ephirium.coffee.common.runTimeout
 import com.ephirium.coffee.databases.users.config.database
 import com.ephirium.coffee.databases.users.config.timeout
@@ -10,7 +11,6 @@ import com.google.firebase.firestore.toObject
 import com.google.firebase.firestore.toObjects
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
@@ -18,7 +18,6 @@ import kotlinx.coroutines.launch
 internal class UserDataStoreImpl : UserDataStore {
     
     override suspend fun getUsers() = flow {
-        val coroutineContext = currentCoroutineContext()
         runTimeout(timeout) {
             database.addSnapshotListener { snapshot, exception ->
                 CoroutineScope(coroutineContext).launch {
@@ -41,13 +40,12 @@ internal class UserDataStoreImpl : UserDataStore {
                     emit(Success(users))
                 }
             }
-        }.onFailure {
+        }.onTimeout {
             emit(TimeoutError)
         }
     }.flowOn(Dispatchers.IO)
     
     override suspend fun getUserById(id: String) = flow {
-        val coroutineContext = currentCoroutineContext()
         runTimeout(timeout) {
             database.document(id).addSnapshotListener { snapshot, exception ->
                 CoroutineScope(coroutineContext).launch {
@@ -70,13 +68,12 @@ internal class UserDataStoreImpl : UserDataStore {
                     emit(Success(user))
                 }
             }
-        }.onFailure {
+        }.onTimeout {
             emit(TimeoutError)
         }
     }.flowOn(Dispatchers.IO)
     
     override suspend fun createUser(user: UserDTO) = flow {
-        val coroutineContext = currentCoroutineContext()
         runTimeout(timeout) {
             database.document(user.id).set(
                 mapOf(
@@ -97,13 +94,12 @@ internal class UserDataStoreImpl : UserDataStore {
                     )
                 }
             }
-        }.onFailure {
+        }.onTimeout {
             emit(TimeoutError)
         }
     }.flowOn(Dispatchers.IO)
     
     override suspend fun updateUser(user: UserDTO) = flow {
-        val coroutineContext = currentCoroutineContext()
         runTimeout(timeout) {
             database.document(user.id).update(
                 mapOf(
@@ -124,13 +120,12 @@ internal class UserDataStoreImpl : UserDataStore {
                     )
                 }
             }
-        }.onFailure {
+        }.onTimeout {
             emit(TimeoutError)
         }
     }.flowOn(Dispatchers.IO)
     
     override suspend fun deleteUser(user: UserDTO) = flow {
-        val coroutineContext = currentCoroutineContext()
         runTimeout(timeout) {
             database.document(user.id).delete().addOnSuccessListener {
                 CoroutineScope(coroutineContext).launch {
@@ -146,7 +141,7 @@ internal class UserDataStoreImpl : UserDataStore {
                     )
                 }
             }
-        }.onFailure {
+        }.onTimeout {
             emit(TimeoutError)
         }
     }.flowOn(Dispatchers.IO)

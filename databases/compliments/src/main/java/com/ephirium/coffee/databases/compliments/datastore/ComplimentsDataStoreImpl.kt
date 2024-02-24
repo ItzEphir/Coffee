@@ -1,6 +1,7 @@
 package com.ephirium.coffee.databases.compliments.datastore
 
 import com.ephirium.coffee.common.Status.*
+import com.ephirium.coffee.common.onTimeout
 import com.ephirium.coffee.common.runTimeout
 import com.ephirium.coffee.databases.compliments.config.database
 import com.ephirium.coffee.databases.compliments.config.timeout
@@ -10,14 +11,12 @@ import com.google.firebase.firestore.toObject
 import com.google.firebase.firestore.toObjects
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 
 internal class ComplimentsDataStoreImpl : ComplimentsDataStore {
     override suspend fun getCompliments() = flow {
-        val coroutineContext = currentCoroutineContext()
         runTimeout(timeout) {
             database.addSnapshotListener { snapshot, exception ->
                 CoroutineScope(coroutineContext).launch {
@@ -39,13 +38,12 @@ internal class ComplimentsDataStoreImpl : ComplimentsDataStore {
                     emit(Success(compliments))
                 }
             }
-        }.onFailure {
+        }.onTimeout {
             emit(TimeoutError)
         }
     }.flowOn(Dispatchers.IO)
     
     override suspend fun getComplimentById(id: String) = flow {
-        val coroutineContext = currentCoroutineContext()
         runTimeout(timeout) {
             database.document(id).addSnapshotListener { snapshot, exception ->
                 CoroutineScope(coroutineContext).launch {
@@ -72,13 +70,12 @@ internal class ComplimentsDataStoreImpl : ComplimentsDataStore {
                     )
                 }
             }
-        }.onFailure {
+        }.onTimeout {
             emit(TimeoutError)
         }
     }.flowOn(Dispatchers.IO)
     
     override suspend fun createCompliment(compliment: ComplimentDTO) = flow {
-        val coroutineContext = currentCoroutineContext()
         runTimeout(timeout) {
             database.document(compliment.id).set(
                 mapOf(
@@ -99,13 +96,12 @@ internal class ComplimentsDataStoreImpl : ComplimentsDataStore {
                     )
                 }
             }
-        }.onFailure {
+        }.onTimeout {
             emit(TimeoutError)
         }
     }.flowOn(Dispatchers.IO)
     
     override suspend fun updateCompliment(compliment: ComplimentDTO) = flow {
-        val coroutineContext = currentCoroutineContext()
         runTimeout(timeout) {
             database.document(compliment.id).update(
                 mapOf(
@@ -126,13 +122,12 @@ internal class ComplimentsDataStoreImpl : ComplimentsDataStore {
                     )
                 }
             }
-        }.onFailure {
+        }.onTimeout {
             emit(TimeoutError)
         }
     }.flowOn(Dispatchers.IO)
     
     override suspend fun deleteCompliment(compliment: ComplimentDTO) = flow {
-        val coroutineContext = currentCoroutineContext()
         runTimeout(timeout) {
             database.document(compliment.id).delete().addOnSuccessListener {
                 CoroutineScope(coroutineContext).launch {
@@ -148,7 +143,7 @@ internal class ComplimentsDataStoreImpl : ComplimentsDataStore {
                     )
                 }
             }
-        }.onFailure {
+        }.onTimeout {
             emit(TimeoutError)
         }
     }.flowOn(Dispatchers.IO)
