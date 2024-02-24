@@ -9,7 +9,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
-import com.ephirium.coffee.app.presentation.state.MainScreenState.*
+import com.ephirium.coffee.app.presentation.state.ComplimentScreenState.*
 import com.ephirium.coffee.app.presentation.viewmodel.ComplimentScreenViewModel
 import org.koin.androidx.compose.koinViewModel
 

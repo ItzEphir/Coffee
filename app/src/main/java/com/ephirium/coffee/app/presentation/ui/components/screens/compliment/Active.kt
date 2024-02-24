@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.ephirium.coffee.app.R
 import com.ephirium.coffee.app.presentation.model.UiCompliment
-import com.ephirium.coffee.app.presentation.state.MainScreenState.Active
+import com.ephirium.coffee.app.presentation.state.ComplimentScreenState.Active
 import com.ephirium.coffee.app.presentation.ui.theme.CoffeeTheme
 
 @Composable

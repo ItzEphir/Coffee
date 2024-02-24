@@ -1,6 +1,7 @@
 package com.ephirium.coffee.data.repository
 
 import com.ephirium.coffee.data.storage.Database
+import com.ephirium.coffee.domain.mapper.convertForPresentation
 import com.ephirium.coffee.domain.model.dto.UserDTOBase
 import com.ephirium.coffee.domain.model.present.User
 import com.ephirium.coffee.domain.repository.AuthRepositoryBase
@@ -36,7 +37,7 @@ class AuthRepositoryImpl(private val userRepository: UserRepositoryBase) : AuthR
         login: String,
         email: String,
         password: String,
-    ): Flow<Result<UserDTOBase>> = createUser(email, password).flatMapLatest { result ->
+    ): Flow<Result<User>> = createUser(email, password).flatMapLatest { result ->
         result.onFailure { throwable ->
             return@flatMapLatest flow {
                 emit(Result.failure(throwable))
@@ -49,8 +50,19 @@ class AuthRepositoryImpl(private val userRepository: UserRepositoryBase) : AuthR
         }
         userRepository.postUser(
             User(
-                UUID.randomUUID().toString(), result.getOrThrow().uid, listOf(Database.fcm.token.result)
+                UUID.randomUUID().toString(),
+                result.getOrThrow().uid,
+                listOf(Database.fcm.token.result)
             )
         )
+    }.catch { emit(Result.failure(it)) }.map { result ->
+        result.map { it.convertForPresentation() }
     }.flowOn(Dispatchers.IO)
+    
+    override suspend fun signIn(login: String, password: String): Flow<Result<User>> =
+        flow<Result<UserDTOBase>> {
+            Database.auth.signInWithEmailAndPassword(login, password)
+        }.map { result ->
+            result.map { it.convertForPresentation() }
+        }
 }

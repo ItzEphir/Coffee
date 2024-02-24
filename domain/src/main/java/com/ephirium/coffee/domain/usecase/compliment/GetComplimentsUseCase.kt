@@ -1,14 +1,8 @@
 package com.ephirium.coffee.domain.usecase.compliment
 
-import com.ephirium.coffee.domain.mapper.convertForPresentation
-import com.ephirium.coffee.domain.repository.ComplimentRepositoryBase
-import kotlinx.coroutines.flow.map
+import com.ephirium.coffee.domain.repository.ComplimentRepository
 
-class GetComplimentsUseCase(private val complimentRepository: ComplimentRepositoryBase) {
+class GetComplimentsUseCase(private val complimentRepository: ComplimentRepository) {
     
-    suspend fun execute() = complimentRepository.getCompliments().map { complimentsResult ->
-        complimentsResult.getOrThrow().map {
-            it.convertForPresentation()
-        }
-    }
+    suspend fun execute() = complimentRepository.getCompliments()
 }

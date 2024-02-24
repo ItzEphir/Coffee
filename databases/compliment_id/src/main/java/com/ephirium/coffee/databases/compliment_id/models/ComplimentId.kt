@@ -1,4 +1,4 @@
-package com.ephirium.coffee.data.datastore
+package com.ephirium.coffee.databases.compliment_id.models
 
 import io.realm.kotlin.types.RealmObject
 import io.realm.kotlin.types.annotations.PrimaryKey

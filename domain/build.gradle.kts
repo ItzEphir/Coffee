@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_1_8
+
 @Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
     id("java-library")
@@ -5,13 +7,20 @@ plugins {
     alias(libs.plugins.serialization)
 }
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+kotlin{
+    compilerOptions{
+        jvmTarget.set(JVM_1_8)
+    }
 }
 
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
 dependencies {
 
+    implementation(project(":common"))
+    
     implementation(libs.koin.core)
 
     implementation(libs.kotlinx.coroutines.core)

@@ -4,4 +4,8 @@
     <string name="notification_channel_name">Daily Coffee</string>
     <string name="notification_coffee_description">Coffee for a good day</string>
     <string name="widget_refresh_button">Refresh</string>
+    <string name="sign_up">Sign up</string>
+    <string name="sign_in">Sign in</string>
+    <string name="go_to_sign_up">Don`t have an account? Sign up</string>
+    <string name="go_to_sign_in">Already have an account? Sign in</string>
 </resources>

@@ -1,13 +1,6 @@
 @file:Suppress("UnstableApiUsage")
 
 
-include(":data")
-
-
-
-include(":domain")
-
-
 pluginManagement {
     repositories {
         google()
@@ -25,4 +18,10 @@ dependencyResolutionManagement {
 
 rootProject.name = "Coffee"
 include(":app")
+include(":databases:compliments")
+include(":databases:users")
+include(":databases:compliment_id")
+include(":data")
+include(":domain")
+include(":common")
  

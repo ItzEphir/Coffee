@@ -1,14 +1,18 @@
 package com.ephirium.coffee.domain.usecase.compliment
 
-import com.ephirium.coffee.domain.mapper.convertForPresentation
-import com.ephirium.coffee.domain.repository.ComplimentRepositoryBase
-import kotlinx.coroutines.flow.mapNotNull
+import com.ephirium.coffee.common.Status.*
+import com.ephirium.coffee.domain.repository.ComplimentRepository
+import kotlinx.coroutines.flow.map
 
-class GetRandomComplimentUseCase(private val complimentsRepositoryBase: ComplimentRepositoryBase) {
+class GetRandomComplimentUseCase(private val complimentsRepository: ComplimentRepository) {
     
     suspend fun execute(exceptedId: String? = null) =
-        complimentsRepositoryBase.getCompliments().mapNotNull { complimentsResult ->
-            complimentsResult.getOrThrow().filterNot { it.id == exceptedId }.random()
-                .convertForPresentation()
+        complimentsRepository.getCompliments().map { status ->
+            when (status) {
+                is Success      -> Success(status.result.filterNot { it.id == exceptedId }.random())
+                is TimeoutError -> TimeoutError
+                is NetworkError -> NetworkError
+                is Error        -> Error
+            }
         }
 }
