@@ -1,68 +1,48 @@
 package com.ephirium.coffee.data.repository
 
-import com.ephirium.coffee.data.storage.Database
-import com.ephirium.coffee.domain.mapper.convertForPresentation
-import com.ephirium.coffee.domain.model.dto.UserDTOBase
-import com.ephirium.coffee.domain.model.present.User
-import com.ephirium.coffee.domain.repository.AuthRepositoryBase
-import com.ephirium.coffee.domain.repository.UserRepositoryBase
-import com.google.firebase.auth.FirebaseAuthException
-import com.google.firebase.auth.FirebaseUser
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.*
-import java.util.UUID
+import com.ephirium.coffee.auth.datastore.AuthDataStore
+import com.ephirium.coffee.common.flatMap
+import com.ephirium.coffee.common.map
+import com.ephirium.coffee.data.mappers.map
+import com.ephirium.coffee.databases.users.datastore.UserDataStore
+import com.ephirium.coffee.databases.users.models.UserDTO
+import com.ephirium.coffee.domain.repository.AuthRepository
+import com.google.firebase.messaging.FirebaseMessaging
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.map
 
-class AuthRepositoryImpl(private val userRepository: UserRepositoryBase) : AuthRepositoryBase {
-    
-    private suspend fun createUser(email: String, password: String) = flow<Result<FirebaseUser>> {
-        val coroutineContext = currentCoroutineContext()
-        Database.auth.createUserWithEmailAndPassword(email, password).addOnSuccessListener {
-            val user = it.user ?: throw FirebaseAuthException("", "Auth result is null")
-            user.sendEmailVerification().addOnSuccessListener {
-                CoroutineScope(coroutineContext).launch {
-                    emit(Result.success(user))
-                }
-            }.addOnFailureListener { exception ->
-                CoroutineScope(coroutineContext).launch {
-                    emit(Result.failure(exception))
-                }
-            }
-        }
-    }.catch { throwable ->
-        emit(Result.failure(throwable))
-    }.flowOn(Dispatchers.IO)
+internal class AuthRepositoryImpl(
+    private val authDataStore: AuthDataStore,
+    private val userDataStore: UserDataStore,
+    private val cloudMessaging: FirebaseMessaging,
+) : AuthRepository {
     
     @OptIn(ExperimentalCoroutinesApi::class)
-    override suspend fun createNewUser(
+    override suspend fun singUp(
         login: String,
         email: String,
         password: String,
-    ): Flow<Result<User>> = createUser(email, password).flatMapLatest { result ->
-        result.onFailure { throwable ->
-            return@flatMapLatest flow {
-                emit(Result.failure(throwable))
-            }
-        }
-        Database.fcm.token.exception?.let { exception ->
-            return@flatMapLatest flow {
-                emit(Result.failure(exception))
-            }
-        }
-        userRepository.postUser(
-            User(
-                UUID.randomUUID().toString(),
-                result.getOrThrow().uid,
-                listOf(Database.fcm.token.result)
-            )
+    ) = authDataStore.signUp(email, password).flatMapLatest { firebaseUserStatus ->
+        val user = UserDTO(
+            login = login,
+            email = email,
         )
-    }.catch { emit(Result.failure(it)) }.map { result ->
-        result.map { it.convertForPresentation() }
-    }.flowOn(Dispatchers.IO)
+        cloudMessaging.token.addOnSuccessListener {
+            user.devices = listOf(it)
+        }
+        firebaseUserStatus.flatMap {
+            user.id = it.uid
+            userDataStore.createUser(user).map { status -> status.map { user.map() } }
+        }
+    }
     
-    override suspend fun signIn(login: String, password: String): Flow<Result<User>> =
-        flow<Result<UserDTOBase>> {
-            Database.auth.signInWithEmailAndPassword(login, password)
-        }.map { result ->
-            result.map { it.convertForPresentation() }
+    @OptIn(ExperimentalCoroutinesApi::class)
+    override suspend fun signIn(email: String, password: String) =
+        authDataStore.signIn(email, password).flatMapLatest { firebaseUserStatus ->
+            firebaseUserStatus.flatMap {
+                userDataStore.getUserById(it.uid)
+                    .map { status -> status.map { user -> user.map() } }
+            }
         }
 }

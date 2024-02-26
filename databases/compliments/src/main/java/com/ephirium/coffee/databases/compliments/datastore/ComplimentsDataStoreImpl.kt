@@ -11,6 +11,7 @@ import com.google.firebase.firestore.toObject
 import com.google.firebase.firestore.toObjects
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
@@ -41,7 +42,7 @@ internal class ComplimentsDataStoreImpl : ComplimentsDataStore {
         }.onTimeout {
             emit(TimeoutError)
         }
-    }.flowOn(Dispatchers.IO)
+    }.flowOn(Dispatchers.IO).conflate()
     
     override suspend fun getComplimentById(id: String) = flow {
         runTimeout(timeout) {
@@ -73,7 +74,7 @@ internal class ComplimentsDataStoreImpl : ComplimentsDataStore {
         }.onTimeout {
             emit(TimeoutError)
         }
-    }.flowOn(Dispatchers.IO)
+    }.flowOn(Dispatchers.IO).conflate()
     
     override suspend fun createCompliment(compliment: ComplimentDTO) = flow {
         runTimeout(timeout) {
@@ -99,7 +100,7 @@ internal class ComplimentsDataStoreImpl : ComplimentsDataStore {
         }.onTimeout {
             emit(TimeoutError)
         }
-    }.flowOn(Dispatchers.IO)
+    }.flowOn(Dispatchers.IO).conflate()
     
     override suspend fun updateCompliment(compliment: ComplimentDTO) = flow {
         runTimeout(timeout) {
@@ -125,7 +126,7 @@ internal class ComplimentsDataStoreImpl : ComplimentsDataStore {
         }.onTimeout {
             emit(TimeoutError)
         }
-    }.flowOn(Dispatchers.IO)
+    }.flowOn(Dispatchers.IO).conflate()
     
     override suspend fun deleteCompliment(compliment: ComplimentDTO) = flow {
         runTimeout(timeout) {
@@ -146,5 +147,5 @@ internal class ComplimentsDataStoreImpl : ComplimentsDataStore {
         }.onTimeout {
             emit(TimeoutError)
         }
-    }.flowOn(Dispatchers.IO)
+    }.flowOn(Dispatchers.IO).conflate()
 }

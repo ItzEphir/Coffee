@@ -4,5 +4,5 @@ import com.ephirium.coffee.domain.repository.ComplimentIdRepository
 
 class SaveComplimentIdUseCase(private val complimentIdRepository: ComplimentIdRepository) {
     
-    suspend fun execute(id: String) = complimentIdRepository.saveComplimentId(id)
+    suspend operator fun invoke(id: String) = complimentIdRepository.saveComplimentId(id)
 }

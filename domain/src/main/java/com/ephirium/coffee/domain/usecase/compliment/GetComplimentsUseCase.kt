@@ -4,5 +4,5 @@ import com.ephirium.coffee.domain.repository.ComplimentRepository
 
 class GetComplimentsUseCase(private val complimentRepository: ComplimentRepository) {
     
-    suspend fun execute() = complimentRepository.getCompliments()
+    suspend operator fun invoke() = complimentRepository.getCompliments()
 }

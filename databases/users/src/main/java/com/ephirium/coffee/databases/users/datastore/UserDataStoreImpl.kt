@@ -11,6 +11,7 @@ import com.google.firebase.firestore.toObject
 import com.google.firebase.firestore.toObjects
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
@@ -43,7 +44,7 @@ internal class UserDataStoreImpl : UserDataStore {
         }.onTimeout {
             emit(TimeoutError)
         }
-    }.flowOn(Dispatchers.IO)
+    }.flowOn(Dispatchers.IO).conflate()
     
     override suspend fun getUserById(id: String) = flow {
         runTimeout(timeout) {
@@ -71,14 +72,15 @@ internal class UserDataStoreImpl : UserDataStore {
         }.onTimeout {
             emit(TimeoutError)
         }
-    }.flowOn(Dispatchers.IO)
+    }.flowOn(Dispatchers.IO).conflate()
     
     override suspend fun createUser(user: UserDTO) = flow {
         runTimeout(timeout) {
             database.document(user.id).set(
                 mapOf(
+                    "login" to user.login,
+                    "email" to user.email,
                     "devices" to user.devices,
-                    "user" to user.user,
                 )
             ).addOnSuccessListener {
                 CoroutineScope(coroutineContext).launch {
@@ -97,14 +99,15 @@ internal class UserDataStoreImpl : UserDataStore {
         }.onTimeout {
             emit(TimeoutError)
         }
-    }.flowOn(Dispatchers.IO)
+    }.flowOn(Dispatchers.IO).conflate()
     
     override suspend fun updateUser(user: UserDTO) = flow {
         runTimeout(timeout) {
             database.document(user.id).update(
                 mapOf(
+                    "login" to user.login,
+                    "email" to user.email,
                     "devices" to user.devices,
-                    "user" to user.user,
                 )
             ).addOnSuccessListener {
                 CoroutineScope(coroutineContext).launch {
@@ -123,7 +126,7 @@ internal class UserDataStoreImpl : UserDataStore {
         }.onTimeout {
             emit(TimeoutError)
         }
-    }.flowOn(Dispatchers.IO)
+    }.flowOn(Dispatchers.IO).conflate()
     
     override suspend fun deleteUser(user: UserDTO) = flow {
         runTimeout(timeout) {
@@ -144,5 +147,5 @@ internal class UserDataStoreImpl : UserDataStore {
         }.onTimeout {
             emit(TimeoutError)
         }
-    }.flowOn(Dispatchers.IO)
+    }.flowOn(Dispatchers.IO).conflate()
 }

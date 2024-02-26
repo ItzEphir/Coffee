@@ -1,6 +1,6 @@
 package com.ephirium.coffee.data.repository
 
-import com.ephirium.coffee.common.Status.*
+import com.ephirium.coffee.common.map
 import com.ephirium.coffee.data.mappers.map
 import com.ephirium.coffee.databases.compliments.datastore.ComplimentsDataStore
 import com.ephirium.coffee.domain.repository.ComplimentRepository
@@ -14,22 +14,12 @@ internal class ComplimentRepositoryImpl(
     @OptIn(ExperimentalCoroutinesApi::class)
     override suspend fun getCompliments() =
         complimentsDataStore.getCompliments().mapLatest { status ->
-            when (status) {
-                is Success      -> Success(status.result.map { it.map() })
-                is TimeoutError -> TimeoutError
-                is NetworkError -> NetworkError
-                is Error        -> Error
-            }
+            status.map { compliments -> compliments.map { it.map() } }
         }
     
     @OptIn(ExperimentalCoroutinesApi::class)
     override suspend fun getComplimentById(id: String) =
         complimentsDataStore.getComplimentById(id).mapLatest { status ->
-            when (status) {
-                is Success      -> Success(status.result.map())
-                is TimeoutError -> TimeoutError
-                is NetworkError -> NetworkError
-                is Error        -> Error
-            }
+            status.map { compliment -> compliment.map() }
         }
 }

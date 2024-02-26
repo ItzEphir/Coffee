@@ -9,3 +9,4 @@ sealed interface Status<in T> {
     
     data object Error : Status<Any>
 }
+
