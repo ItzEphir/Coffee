@@ -5,14 +5,14 @@ import android.content.SharedPreferences
 
 class PreferenceManager(context: Context) {
     private val sharedPreferences: SharedPreferences =
-        context.getSharedPreferences(sharedPreferenceKey, Context.MODE_PRIVATE)
+        context.getSharedPreferences(SHARED_PREFERENCE_KEY, Context.MODE_PRIVATE)
 
     var compliment: String?
-        get() = sharedPreferences.getString(complimentKey, null)
-        set(value) = sharedPreferences.edit().putString(complimentKey, value).apply()
+        get() = sharedPreferences.getString(COMPLIMENT_KEY, null)
+        set(value) = sharedPreferences.edit().putString(COMPLIMENT_KEY, value).apply()
 
     companion object {
-        const val sharedPreferenceKey = "pref"
-        const val complimentKey = "compliment"
+        const val SHARED_PREFERENCE_KEY = "pref"
+        const val COMPLIMENT_KEY = "compliment"
     }
 }

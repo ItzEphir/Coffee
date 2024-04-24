@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="retry_button_text">Повторить</string>
+    <string name="something_went_wrong">Что-то пошло не так</string>
+    <string name="no_internet_connection">Подключение к интернету не найдено</string>
+    <string name="timeout">Время ожидания истекло. Попробуйте позже</string>
+    <string name="sign_in_button">Войти</string>
+    <string name="sign_up_button">Зарегистрироваться</string>
+    <string name="name_placeholder">имя</string>
+    <string name="login_placeholder">логин</string>
+    <string name="password_placeholder">пароль</string>
+    <string name="go_to_sign_up_button">Нет аккаунта? Зарегистрируйтесь!</string>
+    <string name="go_to_sign_in_button">Уже есть аккаунт? Войдите!</string>
+</resources>

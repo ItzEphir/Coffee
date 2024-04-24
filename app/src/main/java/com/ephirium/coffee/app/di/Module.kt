@@ -3,7 +3,6 @@ package com.ephirium.coffee.app.di
 import android.app.AlarmManager
 import android.content.Context
 import androidx.datastore.core.DataStore
-import androidx.datastore.core.DataStoreFactory
 import androidx.datastore.preferences.preferencesDataStore
 import com.ephirium.coffee.app.BuildConfig
 import com.ephirium.coffee.app.notification.DailyCoffeeHelper

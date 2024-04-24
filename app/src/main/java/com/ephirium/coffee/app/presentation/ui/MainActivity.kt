@@ -1,7 +1,6 @@
 package com.ephirium.coffee.app.presentation.ui
 
 import android.Manifest.permission
-import android.os.Build
 import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
 import android.os.Bundle
@@ -13,10 +12,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.core.app.ActivityCompat
-import com.ephirium.coffee.app.presentation.ui.navigation.Navigation
 import com.ephirium.coffee.app.presentation.ui.theme.CoffeeTheme
 import com.ephirium.coffee.feature.auth.ui.screen.AuthScreen
-import org.koin.android.ext.android.getKoin
 import org.koin.compose.KoinContext
 
 

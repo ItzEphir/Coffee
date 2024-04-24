@@ -22,9 +22,7 @@ import com.ephirium.coffee.feature.auth.presentation.state.AuthUiState
 import com.ephirium.coffee.feature.auth.presentation.state.AuthUiState.*
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.onSubscription
 import kotlinx.coroutines.launch
 
 internal class AuthScreenViewModel(

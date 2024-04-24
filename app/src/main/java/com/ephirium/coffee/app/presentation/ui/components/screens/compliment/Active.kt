@@ -76,6 +76,7 @@ fun Active(state: Active, onSwapClicked: () -> Unit) {
     }
 }
 
+@Suppress("SpellCheckingInspection")
 @PreviewScreenSizes
 @Preview(showBackground = true)
 @Composable

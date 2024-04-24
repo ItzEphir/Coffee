@@ -18,7 +18,6 @@ import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
-import io.ktor.http.ContentType.Companion
 import io.ktor.http.HttpHeaders
 import io.ktor.http.contentType
 import kotlin.time.Duration.Companion.seconds

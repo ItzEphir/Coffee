@@ -14,7 +14,7 @@ class ComplimentScreenViewModel(
 ) : ViewModel() {
     val uiState: StateFlow<ComplimentScreenState> =
         savedStateHandle.getStateFlow<ComplimentScreenState>(
-            uiStateKey, initialValue = Loading
+            UI_STATE_KEY, initialValue = Loading
         )
     
     fun loadCompliment() {
@@ -25,13 +25,13 @@ class ComplimentScreenViewModel(
     fun swapCompliment() {
         viewModelScope.launch {
             if (uiState.value is Active) {
-                savedStateHandle[uiStateKey] = (uiState.value as Active).copy(isVisible = false)
+                savedStateHandle[UI_STATE_KEY] = (uiState.value as Active).copy(isVisible = false)
             }
             
         }
     }
     
     companion object {
-        private const val uiStateKey = "compliment_ui_state"
+        private const val UI_STATE_KEY = "compliment_ui_state"
     }
 }

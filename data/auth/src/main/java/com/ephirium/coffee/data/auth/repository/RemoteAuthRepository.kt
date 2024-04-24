@@ -8,7 +8,6 @@ import com.ephirium.coffee.data.auth.model.dto.Token
 import com.ephirium.coffee.data.auth.model.entity.SecretModel
 import com.ephirium.coffee.data.auth.model.entity.SignInModel
 import com.ephirium.coffee.data.auth.model.entity.SignUpModel
-import com.ephirium.coffee.data.auth.model.request.SignInRequest
 import com.ephirium.coffee.data.auth.service.AuthService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -18,10 +17,7 @@ import kotlinx.coroutines.flow.flowOn
 internal class RemoteAuthRepository(private val authService: AuthService) : AuthRepository {
     override suspend fun signIn(signInModel: SignInModel): Flow<ResponseResult<Token>> = flow {
         emit(authService.signIn(
-            SignInRequest(
-                login = signInModel.login,
-                password = signInModel.password,
-            )
+            signInModel.toRequest()
         ).map { it.token })
     }.flowOn(Dispatchers.IO)
     

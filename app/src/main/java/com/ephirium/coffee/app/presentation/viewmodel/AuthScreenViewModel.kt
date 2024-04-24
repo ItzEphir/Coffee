@@ -7,7 +7,6 @@ import com.ephirium.coffee.app.presentation.state.AuthScreenState
 import com.ephirium.coffee.app.presentation.state.AuthScreenState.SignIn
 import com.ephirium.coffee.app.presentation.state.AuthScreenState.SignUp
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class AuthScreenViewModel(
@@ -15,7 +14,7 @@ class AuthScreenViewModel(
 ) : ViewModel() {
     
     val uiState: StateFlow<AuthScreenState> =
-        savedStateHandle.getStateFlow(key = uiStateKey, initialValue = SignIn())
+        savedStateHandle.getStateFlow(key = UI_STATE_KEY, initialValue = SignIn())
     
     fun signIn(onSuccess: () -> Unit, onFailure: () -> Unit) {
         if (uiState.value !is SignIn) return
@@ -30,44 +29,44 @@ class AuthScreenViewModel(
     }
     
     fun goToSignUp() {
-        savedStateHandle[uiStateKey] = SignUp(
+        savedStateHandle[UI_STATE_KEY] = SignUp(
             email = "", login = uiState.value.login, password = uiState.value.password
         )
     }
     
     fun goToSignIn() {
-        savedStateHandle[uiStateKey] = SignIn(
+        savedStateHandle[UI_STATE_KEY] = SignIn(
             login = uiState.value.login, password = uiState.value.password
         )
     }
     
     fun changeEmail(email: String) {
         if (uiState.value is SignUp) {
-            savedStateHandle[uiStateKey] = (uiState.value as SignUp).copy(email = email)
+            savedStateHandle[UI_STATE_KEY] = (uiState.value as SignUp).copy(email = email)
         }
     }
     
     fun changeLogin(login: String) {
         when (uiState.value) {
-            is SignIn -> savedStateHandle[uiStateKey] =
+            is SignIn -> savedStateHandle[UI_STATE_KEY] =
                 (uiState.value as SignIn).copy(login = login)
             
-            is SignUp -> savedStateHandle[uiStateKey] =
+            is SignUp -> savedStateHandle[UI_STATE_KEY] =
                 (uiState.value as SignUp).copy(login = login)
         }
     }
     
     fun changePassword(password: String) {
         when (uiState.value) {
-            is SignIn -> savedStateHandle[uiStateKey] =
+            is SignIn -> savedStateHandle[UI_STATE_KEY] =
                 (uiState.value as SignIn).copy(password = password)
             
-            is SignUp -> savedStateHandle[uiStateKey] =
+            is SignUp -> savedStateHandle[UI_STATE_KEY] =
                 (uiState.value as SignUp).copy(password = password)
         }
     }
     
     companion object {
-        private const val uiStateKey = "auth_ui_state"
+        private const val UI_STATE_KEY = "auth_ui_state"
     }
 }
