@@ -1,12 +1,47 @@
 package com.ephirium.coffee.core.navigation.ext
 
-import androidx.navigation.NavController
-import androidx.navigation.NavGraphBuilder
+import androidx.compose.animation.*
+import androidx.compose.animation.core.tween
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.navigation.*
+import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.navigation
 import com.ephirium.coffee.core.navigation.components.NavComponent
 import com.ephirium.coffee.core.navigation.components.NavDestination
 import com.ephirium.coffee.core.navigation.components.NavInnerGraph
+
+@Composable
+fun NavHost(
+    navController: NavHostController,
+    startComponent: NavComponent,
+    modifier: Modifier = Modifier,
+    contentAlignment: Alignment = Alignment.Center,
+    route: String? = null,
+    enterTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition) = {
+        fadeIn(animationSpec = tween(700))
+    },
+    exitTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition) = {
+        fadeOut(animationSpec = tween(700))
+    },
+    popEnterTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition) = enterTransition,
+    popExitTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition) = exitTransition,
+    builder: NavGraphBuilder.() -> Unit,
+) = NavHost(
+    navController,
+    remember(route, startComponent.route, builder) {
+        navController.createGraph(startComponent.route, route, builder)
+    },
+    modifier,
+    contentAlignment,
+    enterTransition,
+    exitTransition,
+    popEnterTransition,
+    popExitTransition,
+)
+
 
 fun NavGraphBuilder.composable(
     navController: NavController,

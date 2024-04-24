@@ -12,8 +12,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.core.app.ActivityCompat
+import com.ephirium.coffee.app.presentation.ui.navigation.Navigation
 import com.ephirium.coffee.app.presentation.ui.theme.CoffeeTheme
-import com.ephirium.coffee.feature.auth.ui.screen.AuthScreen
 import org.koin.compose.KoinContext
 
 
@@ -37,7 +37,7 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier.fillMaxSize(),
                         color = MaterialTheme.colorScheme.background,
                     ) {
-                        AuthScreen(onAuthorized = {})
+                        Navigation()
                     }
                 }
             }

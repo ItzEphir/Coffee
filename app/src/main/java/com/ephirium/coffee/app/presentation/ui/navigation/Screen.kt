@@ -7,7 +7,7 @@ import com.ephirium.coffee.core.navigation.ext.navigate
 import com.ephirium.coffee.core.navigation.ext.popUpTo
 import com.ephirium.coffee.feature.auth.ui.screen.AuthScreen
 
-enum class Screens(val navComponent: NavComponent) {
+enum class Screen(val navComponent: NavComponent) {
     MAIN(
         navComponent = NavInnerGraph(
             route = "main",
