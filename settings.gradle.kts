@@ -1,7 +1,6 @@
 @file:Suppress("UnstableApiUsage")
 
-include(":auth")
-
+include(":feature:compliment")
 
 
 pluginManagement {
@@ -21,10 +20,8 @@ dependencyResolutionManagement {
 
 rootProject.name = "Coffee"
 include(":app")
-include(":databases:compliments")
-include(":databases:users")
-include(":databases:compliment_id")
-include(":data")
-include(":domain")
 include(":common")
+include(":feature:auth")
+include(":data:auth")
+include(":data:auth_token")
  

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="retry_button_text">Retry</string>
+    <string name="something_went_wrong">Something went wrong…</string>
+    <string name="no_internet_connection">No internet connection</string>
+    <string name="timeout">Timeout loading… Please retry later</string>
+    <string name="sign_in_button">Sign in</string>
+    <string name="sign_up_button">Sign up</string>
+    <string name="name_placeholder">name</string>
+    <string name="login_placeholder">login</string>
+    <string name="password_placeholder">password</string>
+    <string name="go_to_sign_up_button">Don`t have an account? Sign up!</string>
+    <string name="go_to_sign_in_button">Already have an account? Sign in!</string>
+</resources>

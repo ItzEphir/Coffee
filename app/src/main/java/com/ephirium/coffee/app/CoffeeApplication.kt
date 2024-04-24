@@ -4,11 +4,9 @@ import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
-import com.ephirium.coffee.app.R
 import com.ephirium.coffee.app.di.appModule
-import com.ephirium.coffee.data.di.dataModule
-import com.ephirium.coffee.domain.di.domainModule
 import com.ephirium.coffee.app.notification.DailyCoffeeHelper
+import com.ephirium.coffee.feature.auth.di.authFeatureModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -37,7 +35,7 @@ class CoffeeApplication : Application() {
         startKoin {
             androidLogger()
             androidContext(this@CoffeeApplication)
-            modules(listOf(dataModule, domainModule, appModule))
+            modules(listOf( appModule, authFeatureModule))
         }
     }
 }

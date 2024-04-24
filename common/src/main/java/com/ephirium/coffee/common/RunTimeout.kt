@@ -1,23 +1,22 @@
 package com.ephirium.coffee.common
 
-import com.ephirium.coffee.common.TimeoutResult.TimeoutException
+import com.ephirium.coffee.common.TimeoutResult.TimeoutFailure
 import com.ephirium.coffee.common.TimeoutResult.TimeoutOk
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.TimeoutCancellationException
-import kotlinx.coroutines.async
-import kotlinx.coroutines.withTimeout
-import kotlin.coroutines.coroutineContext
+import kotlinx.coroutines.*
 import kotlin.time.Duration
 
-suspend inline fun runTimeout(
+@Suppress("UNCHECKED_CAST")
+suspend inline fun<reified T> runTimeout(
     timeout: Duration,
-    crossinline block: suspend CoroutineScope.() -> Unit,
-) = CoroutineScope(coroutineContext).async {
-    try {
-        withTimeout(timeout) {
-            TimeoutOk(block())
+    crossinline block: suspend CoroutineScope.() -> T
+) = coroutineScope {
+    async {
+        try {
+            withTimeout(timeout) {
+                TimeoutOk(block())
+            }
+        } catch (exception: TimeoutCancellationException) {
+            TimeoutFailure(exception) as TimeoutResult<T>
         }
-    } catch (exception: TimeoutCancellationException) {
-        TimeoutException
-    }
-}.await()
+    }.await()
+}

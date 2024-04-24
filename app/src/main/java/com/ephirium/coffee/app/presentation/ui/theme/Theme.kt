@@ -17,7 +17,7 @@ private val darkColorScheme = darkColorScheme(
 
 private val lightColorScheme = lightColorScheme(
     primary = Purple40, secondary = PurpleGrey40, tertiary = Pink40
-
+    
     /* Other default colors to override
     background = Color(0xFFFFFBFE),
     surface = Color(0xFFFFFBFE),
@@ -40,19 +40,20 @@ fun CoffeeTheme(
             val context = LocalContext.current
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
-
+        
         darkTheme                                                      -> darkColorScheme
         else                                                           -> lightColorScheme
     }
     val view = LocalView.current
+    
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            window.statusBarColor = colorScheme.primary.toArgb()
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
+            window.statusBarColor = colorScheme.background.copy(alpha = 1f).toArgb()
+            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
         }
     }
-
+    
     MaterialTheme(
         colorScheme = colorScheme, typography = Typography, content = content,
     )
