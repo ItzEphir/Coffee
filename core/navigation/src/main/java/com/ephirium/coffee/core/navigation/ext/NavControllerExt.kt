@@ -1,10 +1,7 @@
-package com.ephirium.coffee.core.navigation
+package com.ephirium.coffee.core.navigation.ext
 
-import androidx.navigation.NavController
-import androidx.navigation.NavOptions
-import androidx.navigation.Navigator
+import androidx.navigation.*
 import com.ephirium.coffee.core.navigation.components.NavComponent
-import com.ephirium.coffee.core.navigation.components.NavDestination
 
 fun NavController.popBackStack(
     navComponent: NavComponent,
@@ -13,7 +10,10 @@ fun NavController.popBackStack(
 ) = popBackStack(navComponent.route, inclusive, saveState)
 
 fun NavController.navigate(
-    navComponent: NavDestination,
+    navComponent: NavComponent,
     navOptions: NavOptions? = null,
     navigatorExtras: Navigator.Extras? = null,
 ) = navigate(navComponent.route, navOptions, navigatorExtras)
+
+fun NavController.navigate(navComponent: NavComponent, builder: NavOptionsBuilder.() -> Unit) =
+    navigate(navComponent, navOptions(builder))

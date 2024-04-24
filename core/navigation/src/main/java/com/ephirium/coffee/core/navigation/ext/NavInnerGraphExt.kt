@@ -1,4 +1,4 @@
-package com.ephirium.coffee.core.navigation
+package com.ephirium.coffee.core.navigation.ext
 
 import com.ephirium.coffee.core.navigation.components.NavComponent
 import com.ephirium.coffee.core.navigation.components.NavInnerGraph
