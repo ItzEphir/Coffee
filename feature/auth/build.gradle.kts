@@ -45,8 +45,7 @@ android {
 }
 
 dependencies {
-    
-    implementation(project(":common"))
+    implementation(project(":core:result"))
     implementation(project(":data:auth_token"))
     implementation(project(":data:auth"))
     

@@ -1,11 +1,10 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.android)
-    alias(libs.plugins.parcelize)
 }
 
 android {
-    namespace = "com.ephirium.coffee.feature.compliment"
+    namespace = "com.ephirium.coffee.commonAndroid"
     compileSdk = 34
     
     defaultConfig {
@@ -44,7 +43,4 @@ dependencies {
     implementation(libs.bundles.android)
     implementation(platform(libs.compose.bom))
     implementation(libs.bundles.compose)
-    implementation(libs.bundles.koin.android)
-    implementation(libs.lifecycle.runtime.ktx)
-    implementation(libs.lifecycle.runtime.compose)
 }

@@ -1,6 +1,6 @@
 package com.ephirium.coffee.data.auth.repository
 
-import com.ephirium.coffee.common.ResponseResult
+import com.ephirium.coffee.core.result.ResponseResult
 import com.ephirium.coffee.data.auth.model.dto.Token
 import com.ephirium.coffee.data.auth.model.entity.SecretModel
 import com.ephirium.coffee.data.auth.model.entity.SignInModel

@@ -3,10 +3,11 @@ package com.ephirium.coffee.feature.auth.presentation.viewmodel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ephirium.coffee.common.ResponseResult.Failure.*
-import com.ephirium.coffee.common.ResponseResult.Failure.Error
-import com.ephirium.coffee.common.on
-import com.ephirium.coffee.common.onOk
+import com.ephirium.coffee.core.result.ResponseResult.Failure.*
+import com.ephirium.coffee.core.result.ResponseResult.Failure.Error
+import com.ephirium.coffee.core.result.on
+import com.ephirium.coffee.core.result.onFailure
+import com.ephirium.coffee.core.result.onOk
 import com.ephirium.coffee.data.auth.model.entity.SignInModel
 import com.ephirium.coffee.data.auth.model.entity.SignUpModel
 import com.ephirium.coffee.data.auth.repository.AuthRepository
@@ -79,11 +80,8 @@ internal class AuthScreenViewModel(
     
     private fun onLoading() {
         job = viewModelScope.launch {
-            println("qqq")
             setUiState(AuthUiState.Loading)
-            println("sss")
             val token = tokenRepository.getToken() ?: run {
-                println("www")
                 passEvent(GoToSignIn)
                 return@launch
             }
@@ -99,8 +97,8 @@ internal class AuthScreenViewModel(
                 }.on<HttpResponseFailure> {
                     it.throwable.printStackTrace()
                     passEvent(GoToSignIn)
-                }.on<Error> {
-                    it.throwable.printStackTrace()
+                }.onFailure {
+                    it.printStackTrace()
                     setUiState(AuthUiState.Error)
                 }
             }

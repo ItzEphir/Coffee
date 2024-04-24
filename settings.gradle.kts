@@ -1,8 +1,3 @@
-@file:Suppress("UnstableApiUsage")
-
-include(":feature:compliment")
-
-
 pluginManagement {
     repositories {
         google()
@@ -11,8 +6,8 @@ pluginManagement {
     }
 }
 dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-    repositories {
+    @Suppress("UnstableApiUsage") repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    @Suppress("UnstableApiUsage") repositories {
         google()
         mavenCentral()
     }
@@ -20,8 +15,10 @@ dependencyResolutionManagement {
 
 rootProject.name = "Coffee"
 include(":app")
-include(":common")
+include(":core:timeout")
+include(":core:result")
+include(":core:navigation")
 include(":feature:auth")
+include(":feature:compliment")
 include(":data:auth")
 include(":data:auth_token")
- 

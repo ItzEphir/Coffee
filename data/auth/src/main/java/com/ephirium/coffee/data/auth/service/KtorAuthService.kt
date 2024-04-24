@@ -1,8 +1,8 @@
 package com.ephirium.coffee.data.auth.service
 
-import com.ephirium.coffee.common.ResponseResult
-import com.ephirium.coffee.common.ResponseResult.Ok
-import com.ephirium.coffee.common.ThrowableToResultMapper
+import com.ephirium.coffee.core.result.ResponseResult
+import com.ephirium.coffee.core.result.ResponseResult.Ok
+import com.ephirium.coffee.core.result.ThrowableToResultMapper
 import com.ephirium.coffee.data.auth.config.RouteProvider
 import com.ephirium.coffee.data.auth.model.dto.Token
 import com.ephirium.coffee.data.auth.model.request.SignInRequest

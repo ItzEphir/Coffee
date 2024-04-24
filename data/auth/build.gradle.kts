@@ -14,7 +14,7 @@ kotlin {
 }
 
 dependencies {
-    implementation(project(":common"))
+    implementation(project(":core:result"))
     
     implementation(libs.coroutines)
     implementation(libs.serialization.json)

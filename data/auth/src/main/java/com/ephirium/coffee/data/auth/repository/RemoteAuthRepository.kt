@@ -1,7 +1,7 @@
 package com.ephirium.coffee.data.auth.repository
 
-import com.ephirium.coffee.common.ResponseResult
-import com.ephirium.coffee.common.map
+import com.ephirium.coffee.core.result.ResponseResult
+import com.ephirium.coffee.core.result.map
 import com.ephirium.coffee.data.auth.mapper.AuthMapper.Companion.toModel
 import com.ephirium.coffee.data.auth.mapper.AuthMapper.Companion.toRequest
 import com.ephirium.coffee.data.auth.model.dto.Token

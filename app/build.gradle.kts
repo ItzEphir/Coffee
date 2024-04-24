@@ -54,8 +54,8 @@ android {
 }
 
 dependencies {
-    
-    implementation(project(":common"))
+    implementation(project(":core:result"))
+    implementation(project(":core:navigation"))
     implementation(project(":feature:auth"))
     implementation(project(":data:auth"))
     
