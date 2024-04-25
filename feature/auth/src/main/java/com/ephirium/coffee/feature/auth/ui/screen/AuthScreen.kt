@@ -186,7 +186,7 @@ private fun AuthScreenLayout(
     }
 }
 
-class SampleUserProvider : PreviewParameterProvider<AuthUiState> {
+private class SampleUserProvider : PreviewParameterProvider<AuthUiState> {
     override val values = sequenceOf(
         Loading,
         Error,

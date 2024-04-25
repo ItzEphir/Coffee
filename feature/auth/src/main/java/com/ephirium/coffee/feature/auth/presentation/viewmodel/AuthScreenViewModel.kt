@@ -4,7 +4,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ephirium.coffee.core.result.ResponseResult.Failure.*
-import com.ephirium.coffee.core.result.ResponseResult.Failure.Error
 import com.ephirium.coffee.core.result.on
 import com.ephirium.coffee.core.result.onFailure
 import com.ephirium.coffee.core.result.onOk
@@ -17,7 +16,6 @@ import com.ephirium.coffee.feature.auth.presentation.event.AuthUiEvent.*
 import com.ephirium.coffee.feature.auth.presentation.event.AuthUiEvent.Loading
 import com.ephirium.coffee.feature.auth.presentation.mapper.SigningUiModelMapper.Companion.toModel
 import com.ephirium.coffee.feature.auth.presentation.model.SigningUiModel
-import com.ephirium.coffee.feature.auth.presentation.model.SigningUiModel.AuthorizeState.In
 import com.ephirium.coffee.feature.auth.presentation.model.SigningUiModel.AuthorizeState.Up
 import com.ephirium.coffee.feature.auth.presentation.state.AuthUiState
 import com.ephirium.coffee.feature.auth.presentation.state.AuthUiState.*
@@ -32,13 +30,14 @@ internal class AuthScreenViewModel(
     private val authRepository: AuthRepository,
 ) : ViewModel() {
     
-    val uiState = savedStateHandle.getStateFlow<AuthUiState>(UI_STATE_KEY, AuthUiState.Loading)
+    val uiState = savedStateHandle.getStateFlow<AuthUiState>(
+        key = UI_STATE_KEY,
+        initialValue = AuthUiState.default,
+    )
     
-    private val event = MutableStateFlow<AuthUiEvent>(Loading)
+    private val event = MutableStateFlow<AuthUiEvent>(value = AuthUiEvent.default)
     
     private var job: Job? = null
-    
-    private var supervisorJob: Job? = null
     
     init {
         onEvent()
@@ -55,7 +54,7 @@ internal class AuthScreenViewModel(
     }
     
     private fun onEvent() {
-        supervisorJob = viewModelScope.launch {
+        viewModelScope.launch {
             event.collect { authUiEvent ->
                 println(authUiEvent)
                 when (authUiEvent) {
@@ -136,11 +135,7 @@ internal class AuthScreenViewModel(
     private fun goToSignUp() {
         setUiState(
             uiState = Signing(
-                signingUiModel = SigningUiModel(
-                    login = "", password = "", authorizeState = Up(
-                        name = ""
-                    )
-                )
+                signingUiModel = SigningUiModel.defaultUp
             )
         )
     }
@@ -148,9 +143,7 @@ internal class AuthScreenViewModel(
     private fun goToSignIn() {
         setUiState(
             uiState = Signing(
-                signingUiModel = SigningUiModel(
-                    login = "", password = "", authorizeState = In
-                )
+                signingUiModel = SigningUiModel.defaultIn
             )
         )
     }
@@ -173,8 +166,8 @@ internal class AuthScreenViewModel(
                         }.on<HttpResponseFailure> {
                             it.throwable.printStackTrace()
                             setUiState(AuthUiState.Error)
-                        }.on<Error> {
-                            it.throwable.printStackTrace()
+                        }.onFailure {
+                            it.printStackTrace()
                             setUiState(AuthUiState.Error)
                         }
                     }
@@ -201,8 +194,8 @@ internal class AuthScreenViewModel(
                         }.on<HttpResponseFailure> {
                             it.throwable.printStackTrace()
                             setUiState(AuthUiState.Error)
-                        }.on<Error> {
-                            it.throwable.printStackTrace()
+                        }.onFailure {
+                            it.printStackTrace()
                             setUiState(AuthUiState.Error)
                         }
                     }

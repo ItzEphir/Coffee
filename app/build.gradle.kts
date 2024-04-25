@@ -56,6 +56,7 @@ android {
 dependencies {
     implementation(project(":core:result"))
     implementation(project(":core:navigation"))
+    implementation(project(":core:network"))
     implementation(project(":feature:auth"))
     implementation(project(":data:auth"))
     
@@ -64,6 +65,7 @@ dependencies {
     implementation(libs.lifecycle.runtime.compose)
     implementation(libs.bundles.compose)
     implementation(libs.bundles.koin.android)
+    implementation(libs.bundles.ktor)
     implementation(libs.serialization.json)
     implementation(libs.datastore.preferences)
 }

@@ -4,18 +4,17 @@ import android.os.Parcelable
 import com.ephirium.coffee.feature.auth.presentation.model.SigningUiModel
 import kotlinx.parcelize.Parcelize
 
-sealed interface AuthUiState : Parcelable {
+internal sealed interface AuthUiState : Parcelable {
     @Parcelize
     data object Loading : AuthUiState
     
     @Parcelize
-    data object PartialLoading: AuthUiState
+    data object PartialLoading : AuthUiState
     
     @Parcelize
     data class Signing(
         val signingUiModel: SigningUiModel,
     ) : AuthUiState
-    
     
     @Parcelize
     data object Timeout : AuthUiState
@@ -28,4 +27,8 @@ sealed interface AuthUiState : Parcelable {
     
     @Parcelize
     data object Authorized : AuthUiState
+    
+    companion object{
+        val default = Loading
+    }
 }

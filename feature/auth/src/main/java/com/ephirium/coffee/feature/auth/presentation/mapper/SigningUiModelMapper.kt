@@ -7,7 +7,7 @@ import com.ephirium.coffee.feature.auth.presentation.model.SigningUiModel
 import com.ephirium.coffee.feature.auth.presentation.model.SigningUiModel.AuthorizeState.In
 import com.ephirium.coffee.feature.auth.presentation.model.SigningUiModel.AuthorizeState.Up
 
-class SigningUiModelMapper {
+internal class SigningUiModelMapper {
     companion object {
         fun SigningUiModel.toModel() = when(authorizeState){
             is In -> SignInModel(login, password)
