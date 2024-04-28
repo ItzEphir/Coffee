@@ -55,6 +55,7 @@ android {
 
 dependencies {
     implementation(project(":core:result"))
+    implementation(project(":core:theme"))
     implementation(project(":core:navigation"))
     implementation(project(":core:network"))
     implementation(project(":feature:auth"))

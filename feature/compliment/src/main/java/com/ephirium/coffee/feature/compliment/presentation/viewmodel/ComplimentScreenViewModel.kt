@@ -3,13 +3,19 @@ package com.ephirium.coffee.feature.compliment.presentation.viewmodel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ephirium.coffee.core.result.onOk
+import com.ephirium.coffee.data.compliment.repository.ComplimentRepository
 import com.ephirium.coffee.feature.compliment.presentation.event.ComplimentUiEvent
+import com.ephirium.coffee.feature.compliment.presentation.mapper.ComplimentMapper.Companion.toUi
 import com.ephirium.coffee.feature.compliment.presentation.state.ComplimentUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-internal class ComplimentScreenViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() {
+internal class ComplimentScreenViewModel(
+    private val savedStateHandle: SavedStateHandle,
+    private val complimentRepository: ComplimentRepository,
+) : ViewModel() {
     
     val uiState = savedStateHandle.getStateFlow<ComplimentUiState>(
         key = UI_STATE_KEY,
@@ -37,15 +43,32 @@ internal class ComplimentScreenViewModel(private val savedStateHandle: SavedStat
             event.collectLatest { complimentUiEvent ->
                 when (complimentUiEvent) {
                     ComplimentUiEvent.Loading -> onLoading()
+                    ComplimentUiEvent.Swap    -> onSwap()
                 }
             }
         }
     }
     
-    private fun onLoading(){
+    private fun onSwap() {
+        (uiState.value as? ComplimentUiState.Compliment)?.let {complimentUiState ->
+            viewModelScope.launch {
+                complimentRepository.getRandomCompliment().collectLatest { responseResult ->
+                    responseResult.onOk { compliment ->
+                        setUiState(complimentUiState.copy(complimentModel = compliment.toUi()))
+                    }
+                }
+            }
+        }
+    }
+    
+    private fun onLoading() {
         setUiState(ComplimentUiState.Loading)
         viewModelScope.launch {
-        
+            complimentRepository.getRandomCompliment().collectLatest { responseResult ->
+                responseResult.onOk { compliment ->
+                    setUiState(ComplimentUiState.Compliment(complimentModel = compliment.toUi()))
+                }
+            }
         }
     }
     

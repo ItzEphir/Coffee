@@ -1,16 +1,12 @@
 package com.ephirium.coffee.feature.auth.ui.screen
 
-import android.os.Build.VERSION_CODES
-import androidx.annotation.RequiresApi
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
@@ -27,6 +23,8 @@ import com.ephirium.coffee.feature.auth.presentation.state.AuthUiState.*
 import com.ephirium.coffee.feature.auth.presentation.state.AuthUiState.Loading
 import com.ephirium.coffee.feature.auth.presentation.viewmodel.AuthScreenViewModel
 import com.ephirium.coffee.feature.auth.ui.components.SigningEditor
+import com.ephirium.coffee.preview.ThemePreview
+import com.ephirium.coffee.theme.CoffeeTheme
 import org.koin.androidx.compose.koinViewModel
 
 
@@ -186,7 +184,7 @@ private fun AuthScreenLayout(
     }
 }
 
-private class SampleUserProvider : PreviewParameterProvider<AuthUiState> {
+private class UiStateProvider : PreviewParameterProvider<AuthUiState> {
     override val values = sequenceOf(
         Loading,
         Error,
@@ -198,18 +196,13 @@ private class SampleUserProvider : PreviewParameterProvider<AuthUiState> {
     )
 }
 
-@RequiresApi(VERSION_CODES.S)
-@PreviewLightDark
+@ThemePreview
 @Composable
 private fun AuthScreenLayoutPreview(
-    @PreviewParameter(SampleUserProvider::class, Int.MAX_VALUE) authUiState: AuthUiState,
+    @PreviewParameter(UiStateProvider::class, Int.MAX_VALUE) authUiState: AuthUiState,
 ) {
-    val isDarkMode = isSystemInDarkTheme()
-    val context = LocalContext.current
-    val colorScheme =
-        if (isDarkMode) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-    MaterialTheme(colorScheme) {
-        Surface(color = colorScheme.surface) {
+    CoffeeTheme {
+        Surface(color = colorScheme.background) {
             AuthScreenLayout(authUiState, AuthScreenActions({}, {}, {}, {}, {}, {}, {}, {}, {}))
         }
     }

@@ -10,7 +10,7 @@ internal sealed interface ComplimentUiState : Parcelable {
     data object Loading : ComplimentUiState
     
     @Parcelize
-    data class Compliment(val complimentModel: ComplimentUiModel) : Parcelable
+    data class Compliment(val complimentModel: ComplimentUiModel) : ComplimentUiState
     
     
 }

@@ -46,6 +46,8 @@ android {
 
 dependencies {
     implementation(project(":core:result"))
+    implementation(project(":core:theme"))
+    implementation(project(":core:preview"))
     implementation(project(":data:auth_token"))
     implementation(project(":data:auth"))
     
@@ -55,7 +57,6 @@ dependencies {
     implementation(libs.activity.compose)
     implementation(platform(libs.compose.bom))
     implementation(libs.bundles.compose)
-    debugImplementation(libs.bundles.compose)
     implementation(libs.bundles.koin.android)
     implementation(libs.serialization.json)
     implementation(libs.navigation.compose)

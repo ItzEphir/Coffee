@@ -1,8 +1,5 @@
 package com.ephirium.coffee.feature.auth.ui.components
 
-import android.os.Build.VERSION_CODES
-import androidx.annotation.RequiresApi
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.IntrinsicSize.Min
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -11,16 +8,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.ephirium.coffee.feature.auth.R
 import com.ephirium.coffee.feature.auth.R.string
 import com.ephirium.coffee.feature.auth.presentation.model.SigningUiModel
 import com.ephirium.coffee.feature.auth.presentation.model.SigningUiModel.AuthorizeState
 import com.ephirium.coffee.feature.auth.presentation.model.SigningUiModel.AuthorizeState.In
 import com.ephirium.coffee.feature.auth.presentation.model.SigningUiModel.AuthorizeState.Up
 import com.ephirium.coffee.feature.auth.presentation.state.AuthUiState.Signing
+import com.ephirium.coffee.preview.ThemePreview
+import com.ephirium.coffee.theme.CoffeeTheme
 
 @Composable
 internal fun SigningEditor(
@@ -33,9 +34,26 @@ internal fun SigningEditor(
 ) {
     val model = uiState.signingUiModel
     Column(modifier = Modifier.height(Min), verticalArrangement = Arrangement.Center) {
-        (model.authorizeState as? Up)?.let {
+        Icon(
+            painter = painterResource(id = R.drawable.coffee_logo),
+            contentDescription = null,
+            modifier = Modifier.align(Alignment.CenterHorizontally),
+            tint = MaterialTheme.colorScheme.primary,
+        )
+
+        Text(
+            text = "Coffee",
+            modifier = Modifier.align(Alignment.CenterHorizontally),
+            color = MaterialTheme.colorScheme.primary,
+            style = MaterialTheme.typography.displayLarge,
+            fontWeight = FontWeight.ExtraBold
+        )
+        
+        Spacer(modifier = Modifier.height(32.dp))
+        
+        (model.authorizeState as? Up)?.let { up ->
             TextField(
-                value = it.name, onValueChange = onNameChanged,
+                value = up.name, onValueChange = onNameChanged,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp)
@@ -69,13 +87,15 @@ internal fun SigningEditor(
                 Text(text = stringResource(string.password_placeholder))
             },
         )
+        
+        Spacer(modifier = Modifier.height(32.dp))
+        
         Button(
             onClick = {
                 onPublish(model.authorizeState)
             },
             modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .padding(top = 64.dp),
+                .align(Alignment.CenterHorizontally),
             shape = RoundedCornerShape(16.dp),
         ) {
             Text(
@@ -96,32 +116,30 @@ internal fun SigningEditor(
                 text = when (model.authorizeState) {
                     In    -> stringResource(string.go_to_sign_up_button)
                     is Up -> stringResource(string.go_to_sign_in_button)
-                }
+                }, modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Center
             )
         }
     }
 }
 
-@RequiresApi(VERSION_CODES.S)
-@PreviewLightDark
+
+@ThemePreview
 @Composable
 private fun SigningEditorPreview() {
-    val isDarkMode = isSystemInDarkTheme()
-    val context = LocalContext.current
-    val colorScheme =
-        if (isDarkMode) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-    MaterialTheme(colorScheme) {
-        Surface {
-            SigningEditor(uiState = Signing(
-                SigningUiModel(
-                    login = "", password = "", Up("")
-                )
-            ),
+    CoffeeTheme {
+        Surface(color = MaterialTheme.colorScheme.background) {
+            SigningEditor(
+                uiState = Signing(
+                    SigningUiModel(
+                        login = "", password = "", Up("")
+                    )
+                ),
                 onLoginChanged = {},
                 onPasswordChanged = {},
                 onNameChanged = {},
                 onPublish = {},
-                onGoToAnother = {})
+                onGoToAnother = {},
+            )
         }
     }
 }

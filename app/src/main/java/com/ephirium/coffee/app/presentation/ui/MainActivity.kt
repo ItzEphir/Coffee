@@ -13,7 +13,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.core.app.ActivityCompat
 import com.ephirium.coffee.app.presentation.ui.navigation.Navigation
-import com.ephirium.coffee.app.presentation.ui.theme.CoffeeTheme
+import com.ephirium.coffee.theme.CoffeeTheme
 import org.koin.compose.KoinContext
 
 
