@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.datetime.TimeZone
 
 internal class RemoteComplimentRepository(
     private val complimentService: ComplimentService,
@@ -62,8 +63,9 @@ internal class RemoteComplimentRepository(
         emit(complimentService.getCompliments(limit, offset, authorId).map { it.toCompliments() })
     }.flowOn(Dispatchers.IO)
     
-    override suspend fun getRandomCompliment(): Flow<ResponseResult<Compliment>> = flow {
-        emit(complimentService.getRandomCompliment().map { it.toCompliment() })
+    override suspend fun getRandomCompliment(timeZone: TimeZone): Flow<ResponseResult<Compliment>> = flow {
+        println("1")
+        emit(complimentService.getRandomCompliment(timeZone).map { it.toCompliment() })
     }.flowOn(Dispatchers.IO)
     
     override suspend fun like(id: String): Flow<ResponseResult<Unit>> = flow<ResponseResult<Unit>> {

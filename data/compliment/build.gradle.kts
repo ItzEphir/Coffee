@@ -22,4 +22,5 @@ dependencies{
     implementation(libs.serialization.json)
     implementation(libs.bundles.ktor)
     implementation(libs.koin.core)
+    implementation(libs.datetime)
 }

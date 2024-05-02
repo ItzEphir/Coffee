@@ -7,6 +7,7 @@ import com.ephirium.coffee.data.compliment.model.request.UpdateComplimentRequest
 import com.ephirium.coffee.data.compliment.model.response.CreateComplimentResponse
 import com.ephirium.coffee.data.compliment.model.response.GetComplimentResponse
 import com.ephirium.coffee.data.compliment.model.response.GetComplimentsResponse
+import kotlinx.datetime.TimeZone
 
 internal interface ComplimentService {
     
@@ -34,7 +35,7 @@ internal interface ComplimentService {
         authorId: String? = null,
     ): ResponseResult<GetComplimentsResponse>
     
-    suspend fun getRandomCompliment(): ResponseResult<GetComplimentResponse>
+    suspend fun getRandomCompliment(timeZone: TimeZone): ResponseResult<GetComplimentResponse>
     
     suspend fun like(id: String, authToken: Token): ResponseResult<Unit>
     

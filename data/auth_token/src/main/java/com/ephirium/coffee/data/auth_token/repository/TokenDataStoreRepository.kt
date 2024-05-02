@@ -16,9 +16,7 @@ internal class TokenDataStoreRepository(
 ) : TokenRepository {
     override suspend fun getToken(): Token? = coroutineScope {
         async(Dispatchers.IO) {
-            dataStore.data.firstOrNull()?.get(tokenKey).also{
-                println(it)
-            }
+            dataStore.data.firstOrNull()?.get(tokenKey)
         }.await()
     }
     

@@ -1,4 +1,4 @@
-package com.ephirium.coffee.app.presentation.ui
+package com.ephirium.coffee.app.ui
 
 import android.Manifest.permission
 import android.os.Build.VERSION
@@ -12,7 +12,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.core.app.ActivityCompat
-import com.ephirium.coffee.app.presentation.ui.navigation.Navigation
+import com.ephirium.coffee.app.ui.navigation.Navigation
 import com.ephirium.coffee.theme.CoffeeTheme
 import org.koin.compose.KoinContext
 

@@ -18,4 +18,6 @@ class NavDestination (
     val exitTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition?)? = null,
     val popEnterTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition?)? = enterTransition,
     val popExitTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition?)? = exitTransition,
-) : NavComponent
+    override val icon: @Composable () -> Unit = {},
+    override val label: @Composable () -> Unit = {},
+) : NavBarComponent

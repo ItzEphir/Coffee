@@ -56,7 +56,6 @@ internal class AuthScreenViewModel(
     private fun onEvent() {
         viewModelScope.launch {
             event.collect { authUiEvent ->
-                println(authUiEvent)
                 when (authUiEvent) {
                     Loading            -> onLoading()
                     GoToSignIn         -> goToSignIn()

@@ -11,6 +11,7 @@ import com.ephirium.coffee.feature.compliment.presentation.state.ComplimentUiSta
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import kotlinx.datetime.TimeZone
 
 internal class ComplimentScreenViewModel(
     private val savedStateHandle: SavedStateHandle,
@@ -41,34 +42,38 @@ internal class ComplimentScreenViewModel(
     private fun onEvent() {
         viewModelScope.launch {
             event.collectLatest { complimentUiEvent ->
+                println(complimentUiEvent)
                 when (complimentUiEvent) {
                     ComplimentUiEvent.Loading -> onLoading()
-                    ComplimentUiEvent.Swap    -> onSwap()
+                    is ComplimentUiEvent.Swap    -> onSwap()
                 }
+                println(complimentUiEvent)
             }
         }
     }
     
     private fun onSwap() {
-        (uiState.value as? ComplimentUiState.Compliment)?.let {complimentUiState ->
+        (uiState.value as? ComplimentUiState.Compliment)?.let { complimentUiState ->
             viewModelScope.launch {
-                complimentRepository.getRandomCompliment().collectLatest { responseResult ->
-                    responseResult.onOk { compliment ->
-                        setUiState(complimentUiState.copy(complimentModel = compliment.toUi()))
+                complimentRepository.getRandomCompliment(TimeZone.currentSystemDefault()).collectLatest { responseResult ->
+                        responseResult.onOk { compliment ->
+                            setUiState(complimentUiState.copy(complimentModel = compliment.toUi()))
+                        }
                     }
-                }
             }
         }
     }
     
     private fun onLoading() {
+        println("GO")
         setUiState(ComplimentUiState.Loading)
         viewModelScope.launch {
-            complimentRepository.getRandomCompliment().collectLatest { responseResult ->
-                responseResult.onOk { compliment ->
-                    setUiState(ComplimentUiState.Compliment(complimentModel = compliment.toUi()))
+            complimentRepository.getRandomCompliment(TimeZone.currentSystemDefault())
+                .collectLatest { responseResult ->
+                    responseResult.onOk { compliment ->
+                        setUiState(ComplimentUiState.Compliment(complimentModel = compliment.toUi()))
+                    }
                 }
-            }
         }
     }
     

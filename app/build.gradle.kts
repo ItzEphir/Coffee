@@ -59,6 +59,7 @@ dependencies {
     implementation(project(":core:navigation"))
     implementation(project(":core:network"))
     implementation(project(":feature:auth"))
+    implementation(project(":feature:compliment"))
     implementation(project(":data:auth"))
     
     implementation(libs.bundles.android)

@@ -16,8 +16,10 @@ import com.ephirium.coffee.data.compliment.service.KtorComplimentService.Complim
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.*
-import io.ktor.http.ContentType
-import io.ktor.http.contentType
+import io.ktor.client.statement.bodyAsText
+import io.ktor.http.*
+import kotlinx.datetime.*
+import kotlinx.datetime.Clock.System
 import org.koin.core.parameter.parametersOf
 
 internal class KtorComplimentService(
@@ -75,9 +77,15 @@ internal class KtorComplimentService(
         }.body<GetComplimentsResponse>())
     }.getOrElse(ThrowableToResultMapper::mapThrowable)
     
-    override suspend fun getRandomCompliment(): ResponseResult<GetComplimentResponse> =
+    override suspend fun getRandomCompliment(timeZone: TimeZone): ResponseResult<GetComplimentResponse> =
         runCatching {
-            Ok(httpClient.get(routeProvider.randomComplimentRoute).body<GetComplimentResponse>())
+            Ok(httpClient.get(routeProvider.randomComplimentRoute){
+                parameter("refresh-data", System.now().toLocalDateTime(timeZone).toString().also {
+                    println(it)
+                })
+            }.also {
+                println("qqq ${it.bodyAsText()}")
+            }.body<GetComplimentResponse>())
         }.getOrElse(ThrowableToResultMapper::mapThrowable)
     
     override suspend fun like(id: String, authToken: Token): ResponseResult<Unit> = runCatching {

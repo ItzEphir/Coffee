@@ -51,4 +51,5 @@ dependencies {
     implementation(libs.bundles.koin.android)
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.lifecycle.runtime.compose)
+    implementation(libs.datetime)
 }
