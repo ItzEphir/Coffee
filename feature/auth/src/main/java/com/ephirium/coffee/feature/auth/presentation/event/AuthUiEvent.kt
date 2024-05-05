@@ -10,7 +10,10 @@ internal sealed interface AuthUiEvent {
     data class PasswordChanged(val password: String) : AuthUiEvent
     data class NameChanged(val name: String) : AuthUiEvent
     data object CancelLoading: AuthUiEvent
-    data object Retry: AuthUiEvent
+    @Suppress("CanSealedSubClassBeObject")
+    class Retry: AuthUiEvent{
+        override fun toString(): String = this::class.simpleName.toString()
+    }
     
     companion object{
         val default = Loading

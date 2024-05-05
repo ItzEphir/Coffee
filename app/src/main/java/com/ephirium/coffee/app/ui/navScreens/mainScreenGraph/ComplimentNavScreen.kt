@@ -5,8 +5,6 @@ import androidx.navigation.NavController
 import com.ephirium.coffee.feature.compliment.ui.screen.ComplimentScreen
 
 @Composable
-fun ComplimentNavScreen(navController: NavController) {
-    ComplimentScreen(onAdd = {
-    
-    })
+fun ComplimentNavScreen(@Suppress("UNUSED_PARAMETER") navController: NavController) {
+    ComplimentScreen()
 }

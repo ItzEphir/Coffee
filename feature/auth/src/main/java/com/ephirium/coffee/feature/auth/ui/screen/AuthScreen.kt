@@ -29,7 +29,7 @@ import org.koin.androidx.compose.koinViewModel
 
 
 @Composable
-fun AuthScreen(onAuthorized: () -> Unit) {
+fun AuthScreen(onAuthorized: suspend () -> Unit) {
     val viewModel: AuthScreenViewModel = koinViewModel()
     
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -48,7 +48,7 @@ fun AuthScreen(onAuthorized: () -> Unit) {
         onSignUp = { viewModel.passEvent(SignUp) },
         onGoToSignIn = { viewModel.passEvent(GoToSignIn) },
         onGoToSignUp = { viewModel.passEvent(GoToSignUp) },
-        onRetry = { viewModel.passEvent(Retry) },
+        onRetry = { viewModel.passEvent(Retry()) },
         onDismiss = { viewModel.passEvent(CancelLoading) },
     )
     

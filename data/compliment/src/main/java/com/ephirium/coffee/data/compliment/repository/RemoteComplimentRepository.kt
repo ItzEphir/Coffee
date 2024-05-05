@@ -64,7 +64,6 @@ internal class RemoteComplimentRepository(
     }.flowOn(Dispatchers.IO)
     
     override suspend fun getRandomCompliment(timeZone: TimeZone): Flow<ResponseResult<Compliment>> = flow {
-        println("1")
         emit(complimentService.getRandomCompliment(timeZone).map { it.toCompliment() })
     }.flowOn(Dispatchers.IO)
     

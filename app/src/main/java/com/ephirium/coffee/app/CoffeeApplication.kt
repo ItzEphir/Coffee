@@ -4,6 +4,7 @@ import android.app.Application
 import com.ephirium.coffee.app.di.appModule
 import com.ephirium.coffee.feature.auth.di.authFeatureModule
 import com.ephirium.coffee.feature.compliment.di.complimentFeatureModule
+import com.ephirium.coffee.feature.compliment_editor.di.complimentEditorFeatureModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -22,7 +23,7 @@ class CoffeeApplication : Application() {
         startKoin {
             androidLogger()
             androidContext(this@CoffeeApplication)
-            modules(listOf(appModule, authFeatureModule, complimentFeatureModule))
+            modules(listOf(appModule, authFeatureModule, complimentFeatureModule, complimentEditorFeatureModule))
         }
     }
 }

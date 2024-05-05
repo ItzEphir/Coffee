@@ -12,11 +12,10 @@ import com.ephirium.coffee.core.result.ResponseResult.Ok
  * @return Result with type R
  */
 @Suppress("UNCHECKED_CAST")
-inline fun <reified T, reified R> ResponseResult<T>.map(block: (T) -> R) =
-    when (this) {
-        is Ok -> Ok(block(data))
-        else  -> this as ResponseResult<R>
-    }
+inline fun <reified T, reified R> ResponseResult<T>.map(block: (T) -> R) = when (this) {
+    is Ok -> Ok(block(data))
+    else  -> this as ResponseResult<R>
+}
 
 /**
  * Map element from result to another result
@@ -77,6 +76,44 @@ inline fun <reified T : ResponseResult<*>> ResponseResult<*>.on(block: (T) -> Un
  * @return Same Result
  */
 inline fun ResponseResult<*>.onFailure(block: (Throwable) -> Unit): ResponseResult<*> {
-    if(this is Failure) block(throwable)
+    if (this is Failure) block(throwable)
     return this
 }
+
+/**
+ * Returns data if result is Ok
+ *
+ * Can be written as:
+ *
+ * ``val data = result.getOrNull()``
+ *
+ * @return value of type T or null
+ */
+fun <T> ResponseResult<T>.getOrNull(): T? = (this as? Ok)?.data
+
+/**
+ * Returns data or throws an exception
+ *
+ * Can be written as:
+ *
+ * ``val data = result.getOrThrow()``
+ *
+ * @return value of type T
+ */
+fun <T> ResponseResult<T>.getOrThrow(): T = try {
+    (this as Ok).data
+} catch (classCastException: ClassCastException) {
+    throw ResponseResultException("Result is not Ok")
+}
+
+
+/**
+ * Returns data
+ *
+ * Can be written as:
+ *
+ * ``val data = result.get()``
+ *
+ * @return value of type T
+ */
+fun <T> ResponseResult<T>.get(): T = (this as Ok).data

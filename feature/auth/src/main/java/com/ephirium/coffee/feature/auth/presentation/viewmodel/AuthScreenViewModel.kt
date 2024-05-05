@@ -1,5 +1,6 @@
 package com.ephirium.coffee.feature.auth.presentation.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -56,6 +57,7 @@ internal class AuthScreenViewModel(
     private fun onEvent() {
         viewModelScope.launch {
             event.collect { authUiEvent ->
+                Log.d("AuthScreenViewModel", "UiEvent: $authUiEvent")
                 when (authUiEvent) {
                     Loading            -> onLoading()
                     GoToSignIn         -> goToSignIn()
@@ -65,7 +67,7 @@ internal class AuthScreenViewModel(
                     is PasswordChanged -> onPasswordChanged(authUiEvent.password)
                     SignIn             -> signIn()
                     SignUp             -> signUp()
-                    Retry              -> onRetry()
+                    is Retry              -> onRetry()
                     CancelLoading      -> onCancelLoading()
                 }
             }
@@ -86,18 +88,23 @@ internal class AuthScreenViewModel(
             authRepository.authorize(token).collectLatest { responseResult ->
                 responseResult.onOk {
                     setUiState(Authorized)
+                    return@collectLatest
                 }.on<NoInternetError> {
                     it.throwable.printStackTrace()
                     setUiState(NoInternet)
+                    return@collectLatest
                 }.on<TimeoutError> {
                     it.throwable.printStackTrace()
                     setUiState(Timeout)
+                    return@collectLatest
                 }.on<HttpResponseFailure> {
                     it.throwable.printStackTrace()
                     passEvent(GoToSignIn)
+                    return@collectLatest
                 }.onFailure {
                     it.printStackTrace()
                     setUiState(AuthUiState.Error)
+                    return@collectLatest
                 }
             }
         }
@@ -156,18 +163,23 @@ internal class AuthScreenViewModel(
                         responseResult.onOk {
                             tokenRepository.setToken(it)
                             setUiState(Authorized)
+                            return@collectLatest
                         }.on<NoInternetError> {
                             it.throwable.printStackTrace()
                             setUiState(NoInternet)
+                            return@collectLatest
                         }.on<TimeoutError> {
                             it.throwable.printStackTrace()
                             setUiState(Timeout)
+                            return@collectLatest
                         }.on<HttpResponseFailure> {
                             it.throwable.printStackTrace()
                             setUiState(AuthUiState.Error)
+                            return@collectLatest
                         }.onFailure {
                             it.printStackTrace()
                             setUiState(AuthUiState.Error)
+                            return@collectLatest
                         }
                     }
                 }
@@ -184,18 +196,23 @@ internal class AuthScreenViewModel(
                         responseResult.onOk {
                             tokenRepository.setToken(it)
                             setUiState(Authorized)
+                            return@collectLatest
                         }.on<NoInternetError> {
                             it.throwable.printStackTrace()
                             setUiState(NoInternet)
+                            return@collectLatest
                         }.on<TimeoutError> {
                             it.throwable.printStackTrace()
                             setUiState(Timeout)
+                            return@collectLatest
                         }.on<HttpResponseFailure> {
                             it.throwable.printStackTrace()
                             setUiState(AuthUiState.Error)
+                            return@collectLatest
                         }.onFailure {
                             it.printStackTrace()
                             setUiState(AuthUiState.Error)
+                            return@collectLatest
                         }
                     }
                 }

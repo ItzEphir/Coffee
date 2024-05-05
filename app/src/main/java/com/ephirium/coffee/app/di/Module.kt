@@ -39,8 +39,6 @@ val appModule = module {
     
     single { androidContext().getSystemService(Context.ALARM_SERVICE) as AlarmManager }
     
-    
-    
     single {
         HttpClient(CIO) {
             expectSuccess = true

@@ -4,13 +4,15 @@ internal sealed interface ComplimentUiEvent {
     
     data object Loading : ComplimentUiEvent
     
-    object Swap : ComplimentUiEvent{
-        override fun equals(other: Any?): Boolean {
-            return false
-        }
-        
-        override fun toString(): String {
-            return "Swap"
-        }
+    @Suppress("CanSealedSubClassBeObject")
+    class Swap : ComplimentUiEvent {
+        override fun toString(): String = this::class.simpleName.toString()
+    }
+    
+    data object AddButtonPressed : ComplimentUiEvent
+    
+    @Suppress("CanSealedSubClassBeObject")
+    class Retry : ComplimentUiEvent {
+        override fun toString(): String = this::class.simpleName.toString()
     }
 }

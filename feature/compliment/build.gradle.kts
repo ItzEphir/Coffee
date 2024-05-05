@@ -19,8 +19,7 @@ android {
         release {
             isMinifyEnabled = false
             proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
             )
         }
     }
@@ -43,6 +42,7 @@ dependencies {
     implementation(project(":core:theme"))
     implementation(project(":core:preview"))
     implementation(project(":core:result"))
+    implementation(project(":core:shimmer"))
     implementation(project(":data:compliment"))
     
     implementation(libs.bundles.android)

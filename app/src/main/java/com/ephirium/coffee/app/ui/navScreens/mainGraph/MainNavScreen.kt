@@ -2,10 +2,8 @@ package com.ephirium.coffee.app.ui.navScreens.mainGraph
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.*
 import androidx.compose.material3.MaterialTheme.colorScheme
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -27,37 +25,59 @@ import com.ephirium.coffee.core.navigation.ext.popUpTo
 fun MainNavScreen(@Suppress("UNUSED_PARAMETER") navController: NavController) {
     val innerNavController = rememberNavController()
     
-    val navComponents = MainScreenGraph.entries.map { it.navComponent }.filterIsInstance<NavBarComponent>()
+    val navComponents =
+        MainScreenGraph.entries.map { it.navComponent }.filterIsInstance<NavBarComponent>()
     
     val navBackStateEntry by innerNavController.currentBackStackEntryAsState()
     val currentDestination by remember {
         derivedStateOf { navBackStateEntry?.destination }
     }
     
-    Scaffold(bottomBar = {
-        NavigationBar(
-            modifier = Modifier.clip(RoundedCornerShape(32.dp)),
-            containerColor = colorScheme.primaryContainer.copy(alpha = 0.5f),
-        ) {
-            navComponents.forEach { navComponent ->
-                NavigationBarItem(
-                    alwaysShowLabel = false,
-                    selected = currentDestination?.route == navComponent.route,
-                    onClick = {
-                        innerNavController.navigate(navComponent) {
-                            popUpTo(MainScreenGraph.COMPLIMENT.navComponent) {
-                                saveState = true
+    Scaffold(
+        bottomBar = {
+            NavigationBar(
+                modifier = Modifier.clip(RoundedCornerShape(32.dp)),
+                containerColor = colorScheme.primaryContainer.copy(alpha = 0.5f),
+            ) {
+                navComponents.slice(0 ..< navComponents.size - 1).forEach { navComponent ->
+                    NavigationBarItem(
+                        alwaysShowLabel = false,
+                        selected = currentDestination?.route == navComponent.route,
+                        onClick = {
+                            innerNavController.navigate(navComponent) {
+                                popUpTo(MainScreenGraph.COMPLIMENT.navComponent) {
+                                    saveState = true
+                                }
+                                launchSingleTop = true
+                                restoreState = true
                             }
-                            launchSingleTop = true
-                            restoreState = true
-                        }
-                    },
-                    icon = navComponent.icon,
-                    label = navComponent.label,
-                )
+                        },
+                        icon = navComponent.icon,
+                        label = navComponent.label,
+                    )
+                }
             }
-        }
-    }) { paddingValues ->
+        },
+        floatingActionButton = {
+            val navComponent = navComponents.last()
+            FloatingActionButton(
+                containerColor = BottomAppBarDefaults.bottomAppBarFabColor,
+                elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation(),
+                onClick = {
+                    innerNavController.navigate(navComponent) {
+                        popUpTo(MainScreenGraph.COMPLIMENT.navComponent) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                },
+                content = navComponent.icon,
+            )
+        },
+        contentWindowInsets = BottomAppBarDefaults.windowInsets,
+        floatingActionButtonPosition = FabPosition.EndOverlay,
+    ) { paddingValues ->
         NavHost(
             modifier = Modifier.padding(paddingValues),
             navController = innerNavController,
