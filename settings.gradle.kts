@@ -15,16 +15,20 @@ dependencyResolutionManagement {
 
 rootProject.name = "Coffee"
 include(":app")
+
 include(":core:timeout")
 include(":core:result")
 include(":core:navigation")
-include(":feature:auth")
-include(":feature:compliment")
-include(":data:auth")
-include(":data:auth_token")
-include(":data:compliment")
 include(":core:network")
 include(":core:theme")
 include(":core:preview")
-include(":feature:compliment_editor")
 include(":core:shimmer")
+
+include(":feature:auth")
+include(":feature:compliment")
+include(":feature:compliment_editor")
+include(":feature:profile")
+
+include(":data:auth")
+include(":data:auth_token")
+include(":data:compliment")

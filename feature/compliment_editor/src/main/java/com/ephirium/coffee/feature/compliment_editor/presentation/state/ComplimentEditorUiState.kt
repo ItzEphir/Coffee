@@ -1,10 +1,12 @@
 package com.ephirium.coffee.feature.compliment_editor.presentation.state
 
 import android.os.Parcelable
+import androidx.compose.runtime.Immutable
 import com.ephirium.coffee.feature.compliment_editor.presentation.model.ComplimentEditorUiModel
 import com.ephirium.coffee.feature.compliment_editor.presentation.model.ComplimentUiModel
 import kotlinx.parcelize.Parcelize
 
+@Immutable
 internal sealed interface ComplimentEditorUiState : Parcelable {
     @Parcelize
     data object Loading : ComplimentEditorUiState

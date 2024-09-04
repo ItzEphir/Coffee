@@ -1,21 +1,15 @@
 [versions]
 agp = "8.3.2"
 kotlin = "1.9.23"
-core = "1.13.0"
-
-junit = "4.13.2"
-android-junit = "1.1.5"
-espresso-core = "3.5.1"
+core = "1.13.1"
 
 lifecycle = "2.7.0"
 activity = "1.9.0"
 material = "1.2.1"
-compose-bom = "2024.04.01"
+compose-bom = "2024.05.00"
 constraint-layout = "1.0.1"
 navigation = "2.7.7"
 coil = "2.6.0"
-
-google-play-services = "21.2.0"
 
 coroutines = "1.8.0"
 serialization-json = "1.6.3"
@@ -23,18 +17,12 @@ serialization-json = "1.6.3"
 koin = "3.5.6"
 
 ktor = "2.3.9"
-realm = "1.14.1"
-datastore = "1.1.0"
+datastore = "1.1.1"
 
 datetime = "0.6.0-RC.2"
-appcompat = "1.6.1"
-google-material = "1.11.0"
 
 [libraries]
 android-core = { group = "androidx.core", name = "core-ktx", version.ref = "core" }
-junit = { group = "junit", name = "junit", version.ref = "junit" }
-androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "android-junit" }
-androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso-core" }
 
 lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle" }
 lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycle" }
@@ -60,27 +48,21 @@ koin-compose = { group = "io.insert-koin", name = "koin-androidx-compose", versi
 coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization-json" }
 
-google-play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "google-play-services" }
-
 ktor-client-core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
 ktor-client-cio = { group = "io.ktor", name = "ktor-client-cio", version.ref = "ktor" }
 ktor-client-content-negotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor" }
 ktor-client-serialization = { group = "io.ktor", name = "ktor-client-serialization", version.ref = "ktor" }
 ktor-client-serialization-json = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
-realm = { group = "io.realm.kotlin", name = "library-base", version.ref = "realm" }
 datastore-core = { group = "androidx.datastore", name = "datastore-preferences-core", version.ref = "datastore" }
 datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore" }
 
 datetime = {group = "org.jetbrains.kotlinx", name="kotlinx-datetime", version.ref = "datetime"}
-androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
-material = { group = "com.google.android.material", name = "material", version.ref = "google-material" }
 
 [bundles]
 ktor = ["ktor-client-core", "ktor-client-cio", "ktor-client-content-negotiation", "ktor-client-serialization", "ktor-client-serialization-json"]
 koin-android = ["koin-core", "koin-android", "koin-compose"]
 android = ["activity", "activity-compose", "android-core"]
 compose = ["ui", "ui-graphics", "ui-tooling", "ui-tooling-preview", "ui-test-manifest", "ui-test-junit4", "material3", "constraintlayout", "navigation-compose", "coil"]
-local-database = ["realm", "datastore-core"]
 
 [plugins]
 application = { id = "com.android.application", version.ref = "agp" }
@@ -89,4 +71,3 @@ kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
-realm = { id = "io.realm.kotlin", version.ref = "realm" }

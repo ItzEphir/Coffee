@@ -1,10 +1,11 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.android)
+    alias(libs.plugins.parcelize)
 }
 
 android {
-    namespace = "com.ephirium.coffee.preview"
+    namespace = "com.ephirium.coffee.feature.profile"
     compileSdk = 34
     
     defaultConfig {
@@ -30,10 +31,24 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
+    buildFeatures {
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.12"
+    }
 }
 
 dependencies {
+    implementation(project(":core:theme"))
+    implementation(project(":core:preview"))
+    implementation(project(":core:result"))
+    implementation(project(":data:compliment"))
+    
+    implementation(libs.bundles.android)
     implementation(platform(libs.compose.bom))
-    implementation(libs.ui.tooling)
-    implementation(libs.ui.tooling.preview)
+    implementation(libs.bundles.compose)
+    implementation(libs.bundles.koin.android)
+    implementation(libs.lifecycle.runtime.ktx)
+    implementation(libs.lifecycle.runtime.compose)
 }

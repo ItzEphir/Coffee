@@ -1,10 +1,12 @@
 package com.ephirium.coffee.feature.auth.presentation.model
 
 import android.os.Parcelable
+import androidx.compose.runtime.Immutable
 import com.ephirium.coffee.feature.auth.presentation.model.SigningUiModel.AuthorizeState.In
 import com.ephirium.coffee.feature.auth.presentation.model.SigningUiModel.AuthorizeState.Up
 import kotlinx.parcelize.Parcelize
 
+@Immutable
 @Parcelize
 internal data class SigningUiModel(
     val login: String,

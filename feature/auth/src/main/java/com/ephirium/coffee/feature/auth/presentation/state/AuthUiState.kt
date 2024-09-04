@@ -1,9 +1,11 @@
 package com.ephirium.coffee.feature.auth.presentation.state
 
 import android.os.Parcelable
+import androidx.compose.runtime.Immutable
 import com.ephirium.coffee.feature.auth.presentation.model.SigningUiModel
 import kotlinx.parcelize.Parcelize
 
+@Immutable
 internal sealed interface AuthUiState : Parcelable {
     @Parcelize
     data object Loading : AuthUiState

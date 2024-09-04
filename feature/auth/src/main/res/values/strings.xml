@@ -11,4 +11,6 @@
     <string name="password_placeholder">password</string>
     <string name="go_to_sign_up_button">Don`t have an account? Sign up!</string>
     <string name="go_to_sign_in_button">Already have an account? Sign in!</string>
+    <string name="turn_on_password_visibility">Make password visible</string>
+    <string name="turn_off_password_visibility">Make password not visible</string>
 </resources>

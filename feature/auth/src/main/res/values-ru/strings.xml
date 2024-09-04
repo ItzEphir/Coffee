@@ -11,4 +11,6 @@
     <string name="password_placeholder">пароль</string>
     <string name="go_to_sign_up_button">Нет аккаунта? Зарегистрируйтесь!</string>
     <string name="go_to_sign_in_button">Уже есть аккаунт? Войдите!</string>
+    <string name="turn_on_password_visibility">Показать пароль</string>
+    <string name="turn_off_password_visibility">Скрыть пароль</string>
 </resources>
